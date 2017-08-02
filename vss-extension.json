@@ -3,8 +3,9 @@
     "id": "dependency-checker",
     "name": "NuGet Dependency Checker",
     "description": "Tool for checking NuGet dependencies.",
-    "version": "0.0.7",
+    "version": "1.0.0",
     "publisher": "chwebdude",
+    "public": true,
     "tags": [
         "Dependency",
         "Extension",
@@ -14,7 +15,8 @@
         "Continuous Integration",
         "Continuous Delivery",
         "Build",
-        "Release"
+        "Release",
+        "Quality"
     ],
     "targets": [
         {
