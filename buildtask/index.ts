@@ -15,10 +15,13 @@ async function run() {
         var createBadge = tl.getBoolInput("createBadge");
         var badgePath = tl.getInput("badgePath");
         var style = tl.getInput("style");
+        var projectFormat = tl.getInput("projectFormat");
+        
         let toolPath = __dirname+"\\..\\bin\\DependencyChecker.exe";
+
         
         let tool: trm.ToolRunner = tl.tool(toolPath).arg([path, searchRecursive.toString(), createReport.toString(),
-             reportPath, createBadge.toString(), badgePath, style]);
+             reportPath, createBadge.toString(), badgePath, style, projectFormat]);
         let result:number =  await tool.exec();
     }
     catch (err) {
