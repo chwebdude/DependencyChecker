@@ -3,7 +3,7 @@
     "id": "dependency-checker",
     "name": "NuGet Dependency Checker",
     "description": "Tool for checking NuGet dependencies.",
-    "version": "0.0.4",
+    "version": "0.0.7",
     "publisher": "chwebdude",
     "tags": [
         "Dependency",
@@ -21,7 +21,6 @@
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Tool for checking for dependencies.",
     "categories": [
         "Build and release"
     ],
@@ -60,26 +59,29 @@
     },
     "screenshots":[
         {
-            "path": "images/overview.jpg"
+            "path": "images/report.jpg"
         },
         {
-            "path": "images/extension-icon.png"
+            "path": "images/badges.jpg"
+        },
+        {
+            "path": "images/overview.jpg"
         }
     ],
 
     "links": {
         "repository": {
-        "uri": "https://github.com/chwebdude/BadgeCreator"
+        "uri": "https://github.com/chwebdude/DependencyChecker"
         },
         "issues": {
-        "uri": "https://github.com/chwebdude/BadgeCreator/issues"
+        "uri": "https://github.com/chwebdude/DependencyChecker/issues"
         },
         "support": {
-        "uri": "https://github.com/chwebdude/BadgeCreator"
+        "uri": "https://github.com/chwebdude/DependencyChecker"
         }
     },
     "repository": {
         "type": "git",
-        "uri": "https://github.com/chwebdude/BadgeCreator"
+        "uri": "https://github.com/chwebdude/DependencyChecker"
     }
 }
