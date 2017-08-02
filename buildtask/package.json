@@ -1,0 +1,19 @@
+{
+  "name": "badge-creator",
+  "version": "1.0.0",
+  "description": "Badge Creator Tool",
+  "main": "badgeCreator.js",
+  "author": "chwebdude",
+  "license": "MIT",
+  "dependencies": {
+    "path": "^0.12.7",
+    "request": "^2.81.0",
+    "require": "^2.4.20",
+    "vsts-task-lib": "^2.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.39",
+    "@types/q": "^1.0.3",
+    "@types/request": "^2.0.0"
+  }
+}

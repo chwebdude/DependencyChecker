@@ -1,0 +1,85 @@
+{
+    "manifestVersion": 1,
+    "id": "dependency-checker",
+    "name": "NuGet Dependency Checker",
+    "description": "Tool for checking NuGet dependencies.",
+    "version": "0.0.4",
+    "publisher": "chwebdude",
+    "tags": [
+        "Dependency",
+        "Extension",
+        "Marketplace",
+        "Package",
+        "Monitor",    
+        "Continuous Integration",
+        "Continuous Delivery",
+        "Build",
+        "Release"
+    ],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Tool for checking for dependencies.",
+    "categories": [
+        "Build and release"
+    ],
+    "icons": {
+        "default": "images/extension-icon.png"        
+    },
+    "files": [
+        {
+            "path": "buildtask/dist/index.js"
+        },{
+            "path": "buildtask/node_modules"
+        },{
+            "path": "buildtask/task.json"
+        },{
+            "path": "buildtask/icon.png"
+        },{
+            "path": "buildtask/bin"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "custom-build-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "buildtask"
+            }
+        }
+    ],
+    "content":{
+        "details":{
+            "path": "Readme.md"
+        }
+    },
+    "screenshots":[
+        {
+            "path": "images/overview.jpg"
+        },
+        {
+            "path": "images/extension-icon.png"
+        }
+    ],
+
+    "links": {
+        "repository": {
+        "uri": "https://github.com/chwebdude/BadgeCreator"
+        },
+        "issues": {
+        "uri": "https://github.com/chwebdude/BadgeCreator/issues"
+        },
+        "support": {
+        "uri": "https://github.com/chwebdude/BadgeCreator"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/chwebdude/BadgeCreator"
+    }
+}
