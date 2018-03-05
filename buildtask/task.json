@@ -9,7 +9,7 @@
     "version": {
         "Major": 1,
         "Minor": 1,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "Check Dependencies",
     "groups": [
@@ -63,7 +63,7 @@
             "options": {
                 "Both": "Both", 
                 "New": "New (Dependencies in *.csproj)",
-                "Old":"Old (Dependencies in packages.config)",            
+                "Old":"Old (Dependencies in packages.config)"            
             },
             "helpMarkDown": "Switch if only old, new or both dependencies formats should be used.",
             "groupName": "search"
