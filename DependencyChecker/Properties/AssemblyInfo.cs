@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DependencyChecker")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Matrix42 AG")]
+[assembly: AssemblyCompany("chwebdude")]
 [assembly: AssemblyProduct("DependencyChecker")]
-[assembly: AssemblyCopyright("Copyright © Matrix42 AG 2019")]
+[assembly: AssemblyCopyright("Copyright © chwebdude 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
