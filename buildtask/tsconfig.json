@@ -6,6 +6,6 @@
         "moduleResolution": "node",
         "outDir": "dist/",
         "noImplicitAny": false,
-        "watch":true        
+        "watch":false        
     }
 }
