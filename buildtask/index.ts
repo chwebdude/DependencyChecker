@@ -8,20 +8,19 @@ async function run() {
 
     try {
 
-        var path = tl.getInput("path");
-        var searchRecursive = tl.getBoolInput("searchRecursive");
-        var createReport = tl.getBoolInput("createReport", true);
-        var reportPath = tl.getInput("reportPath");
-        var createBadge = tl.getBoolInput("createBadge");
-        var badgePath = tl.getInput("badgePath");
-        var style = tl.getInput("style");
-        var projectFormat = tl.getInput("projectFormat");
+        var path = "--search-path " + tl.getInput("path");
+        var searchRecursive = "--search-recursive" + tl.getBoolInput("searchRecursive");
+        var createReport = tl.getBoolInput("createReport", true) ? "--create-report" : "";
+        var reportPath = "--report-path " + tl.getInput("reportPath");
+        var createBadge = tl.getBoolInput("createBadge") ? "--create-badge" : "";
+        var badgePath = "--badge-path " + tl.getInput("badgePath");
+        var style = "--badge-style " + tl.getInput("style");        
         
         let toolPath = __dirname+"\\..\\bin\\DependencyChecker.exe";
 
         
         let tool: trm.ToolRunner = tl.tool(toolPath).arg([path, searchRecursive.toString(), createReport.toString(),
-             reportPath, createBadge.toString(), badgePath, style, projectFormat]);
+             reportPath, createBadge.toString(), badgePath, style]);
         let result:number =  await tool.exec();
     }
     catch (err) {

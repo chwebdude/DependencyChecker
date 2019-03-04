@@ -55,26 +55,12 @@
             "groupName": "search"
         },
         {
-            "name": "projectFormat",
-            "type": "pickList",
-            "label": "Project Format",
-            "defaultValue": "Both",
-            "required": true,
-            "options": {
-                "Both": "Both", 
-                "New": "New (Dependencies in *.csproj)",
-                "Old":"Old (Dependencies in packages.config)"            
-            },
-            "helpMarkDown": "Switch if only old, new or both dependencies formats should be used.",
-            "groupName": "search"
-        },
-        {
             "name": "createBadge",
             "type": "boolean",
             "label": "Create Badge",
             "defaultValue": false,
             "required": true,
-            "helpMarkDown": "Create a badge using shields.io. Requires a internet connection!",
+            "helpMarkDown": "Create a badge using shields.io.",
             "groupName": "badge"
         },
         {

@@ -512,3 +512,4 @@ healthchecksdb
 # BeatPulse healthcheck temp database
 
 # End of https://www.gitignore.io/api/csharp,visualstudio,visualstudiocode
+/buildtask/dist
