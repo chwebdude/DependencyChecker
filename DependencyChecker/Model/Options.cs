@@ -1,54 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommandLine;
 
 namespace DependencyChecker.Model
 {
     public class Options
     {
-        public string BadgePath
-        {
-            get;
-            set;
-        }
+        #region Properties
 
-        public string BadgeStyle
-        {
-            get;
-            set;
-        }
+        [Option("badge-path", Required = false, HelpText = "Sets the path to the badge file.")]
+        public string BadgePath { get; set; }
 
-        public bool CreateBadge
-        {
-            get;
-            set;
-        }
+        [Option("badge-style", Required = false, HelpText = "Defines the style of the badge.")]
+        public string BadgeStyle { get; set; }
 
-        public bool CreateReport
-        {
-            get;
-            set;
-        }
+        [Option("create-badge", Required = false, HelpText = "Defines if a badge needs to be generated.")]
+        public bool CreateBadge { get; set; }
 
+        [Option("create-report", Required = false, HelpText = "Defines if a report needs to be generated.")]
+        public bool CreateReport { get; set; }
 
-        public string ReportPath
-        {
-            get;
-            set;
-        }
+        [Option("report-path", Required = false, HelpText = "Sets the path to the report file.")]
+        public string ReportPath { get; set; }
+        
+        [Option("search-path", Required = true, HelpText = "Defines the search path of the csproj files.")]
+        public string SearchPath { get; set; }
 
-        public string SearchPath
-        {
-            get;
-            set;
-        }
+        [Option("search-recursive", Required = true, HelpText = "Defines if the search is recursive.")]
+        public bool SearchRec { get; set; }
 
-        public bool SearchRec
-        {
-            get;
-            set;
-        }
+        #endregion
     }
 }

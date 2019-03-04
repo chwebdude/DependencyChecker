@@ -1,36 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using CommandLine;
 using DependencyChecker.Model;
 
 namespace DependencyChecker
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        ///     Defines the entry point of the application.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        private static void Main(string[] args)
         {
-            var option = new Options()
-            {
-                SearchPath = args[0],
-                SearchRec = Convert.ToBoolean(args[1]),
-                CreateReport = Convert.ToBoolean(args[2]),
-                ReportPath = args[3],
-                CreateBadge = Convert.ToBoolean(args[4]),
-                BadgePath = args[5],
-                BadgeStyle = args[6]
-            };
-            var options = option;
-            Console.WriteLine("Options: ");
-            var properties = options.GetType().GetProperties();
-            for (var i = 0; i < (int)properties.Length; i++)
-            {
-                var propertyInfo = properties[i];
-                Console.WriteLine(string.Concat(new object[] { "\t", propertyInfo.Name, ":\t", propertyInfo.GetValue(options) }));
-            }
-            new Runner().Run(options);
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(options =>
+                {
+                    // Print options
+                    Console.WriteLine("Options: ");
+                    var properties = options.GetType().GetProperties();
+                    foreach (var propertyInfo in properties)
+                    {
+                        Console.WriteLine(string.Concat("\t", propertyInfo.Name, ":\t", propertyInfo.GetValue(options)));
+                    }
+
+                    if (options.CreateBadge && (string.IsNullOrEmpty(options.BadgePath) || string.IsNullOrEmpty(options.BadgeStyle)))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("For badge creation style and path must be set!");
+                        return;
+                    }
+
+                    if (options.CreateReport && string.IsNullOrEmpty(options.ReportPath))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("For report creation path must be set!");
+                        return;
+                    }
+
+                    new Runner().Run(options);
+                });
         }
     }
 }
