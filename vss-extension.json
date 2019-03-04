@@ -24,7 +24,7 @@
         }
     ],    
     "categories": [
-        "Build and release"
+        "Azure Pipelines"
     ],
     "icons": {
         "default": "images/extension-icon.png"        
