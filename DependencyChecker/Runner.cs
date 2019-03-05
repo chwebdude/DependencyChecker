@@ -1,5 +1,6 @@
 ﻿using DependencyChecker.Model;
 using NuGet.Common;
+using NuGet.Configuration;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
@@ -18,10 +19,11 @@ namespace DependencyChecker
     {
         #region Fields
 
-        public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
+        private readonly ILogger _logger = new Logger();
 
         private readonly List<PackageMetadataResource> _packageMetadataResources = new List<PackageMetadataResource>();
-        private readonly ILogger _logger = new Logger();
+
+        public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
         private Options _options;
 
         #endregion
@@ -36,7 +38,9 @@ namespace DependencyChecker
             Initialize();
             RunAsync(options).Wait();
             if (options.CreateReport)
+            {
                 CreateOutputDocument(options.ReportPath);
+            }
         }
 
         /// <summary>
@@ -92,6 +96,36 @@ namespace DependencyChecker
         /// </summary>
         /// <param name="packageFile">The package file.</param>
         /// <returns>Task&lt;List&lt;PackageStatus&gt;&gt;.</returns>
+        private async Task<List<PackageStatus>> GetPackagesFromCsproj(string csprojFile)
+        {
+            // Parse file content
+            var serializer = new XmlSerializer(typeof(Project));
+            var data = (Project)serializer.Deserialize(new XmlTextReader(csprojFile));
+
+            var packageStatuses = new List<PackageStatus>();
+
+
+            // Crawl trough all Item Groups
+            foreach (var itemGroup in data.ItemGroup)
+            {
+                // Crawl trough all PackageReferences
+                foreach (var package in itemGroup.PackageReference)
+                {
+                    _logger.LogInformation($"Checking package {package.Include}");
+                    var res = await GetPackageStatus(package.Include, package.Version);
+                    packageStatuses.Add(res);
+                    _logger.LogInformation(string.Empty); // Blank line
+                }
+            }
+
+            return packageStatuses;
+        }
+
+        /// <summary>
+        ///     Gets the packages from packges configuration.
+        /// </summary>
+        /// <param name="packageFile">The package file.</param>
+        /// <returns>Task&lt;List&lt;PackageStatus&gt;&gt;.</returns>
         private async Task<List<PackageStatus>> GetPackagesFromPackgesConfig(string packageFile)
         {
             // Parse file content
@@ -107,36 +141,6 @@ namespace DependencyChecker
                 var res = await GetPackageStatus(package.id, package.version);
                 packageStatuses.Add(res);
                 _logger.LogInformation(string.Empty); // Blank line
-            }
-
-            return packageStatuses;
-        }
-
-        /// <summary>
-        ///     Gets the packages from packges configuration.
-        /// </summary>
-        /// <param name="packageFile">The package file.</param>
-        /// <returns>Task&lt;List&lt;PackageStatus&gt;&gt;.</returns>
-        private async Task<List<PackageStatus>> GetPackagesFromCsproj(string csprojFile)
-        {
-            // Parse file content
-            var serializer = new XmlSerializer(typeof(Project));
-            var data = (Project)serializer.Deserialize(new XmlTextReader(csprojFile));
-            
-            var packageStatuses = new List<PackageStatus>();
-
-
-            // Crawl trough all Item Groups
-            foreach (var itemGroup in data.ItemGroup)
-            {
-                // Crawl trough all PackageReferences
-                foreach (var package in itemGroup.PackageReference)
-                {
-                    _logger.LogInformation($"Checking package {package.Include}");
-                    var res = await GetPackageStatus(package.Include, package.Version);
-                    packageStatuses.Add(res);
-                    _logger.LogInformation(string.Empty); // Blank line
-                }
             }
 
             return packageStatuses;
@@ -208,12 +212,18 @@ namespace DependencyChecker
         {
             // Todo: show nuget config
             _logger.LogInformation("Using Sources:");
-            var src = "https://api.nuget.org/v3/index.json";
-            var sourceRepository = Repository.Factory.GetCoreV3(src, FeedType.HttpV3);
-            var x = sourceRepository.GetResource<PackageMetadataResource>();
-            _packageMetadataResources.Add(x);
-            _logger.LogInformation(src);
 
+
+            var settings = Settings.LoadDefaultSettings(root: null);
+            var sourceRepositoryProvider = new SourceRepositoryProvider(settings, Repository.Provider.GetCoreV3());
+            var sourceRepository = sourceRepositoryProvider.GetRepositories();
+            foreach (var repository in sourceRepository)
+            {
+                var resource = repository.GetResource<PackageMetadataResource>();
+                _packageMetadataResources.Add(resource);
+                _logger.LogInformation("  " + repository + " \t - \t" + repository.PackageSource.Source);
+
+            }
 
             _logger.LogInformation(string.Empty); // Blank line
         }
