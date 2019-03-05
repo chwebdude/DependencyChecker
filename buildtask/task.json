@@ -55,6 +55,15 @@
             "groupName": "search"
         },
         {
+            "name": "includePrerelease",
+            "type": "boolean",
+            "label": "Include Prerelease",
+            "defaultValue": false,
+            "required": true,
+            "helpMarkDown": "Search for prerelease packages.",
+            "groupName": "search"
+        },
+        {
             "name": "createBadge",
             "type": "boolean",
             "label": "Create Badge",

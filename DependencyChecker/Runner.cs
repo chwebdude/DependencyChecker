@@ -21,7 +21,8 @@ namespace DependencyChecker
         private readonly List<CodeProject> _codeProjects = new List<CodeProject>();
 
         private readonly List<PackageMetadataResource> _packageMetadataResources = new List<PackageMetadataResource>();
-        private readonly ILogger logger = new Logger();
+        private readonly ILogger _logger = new Logger();
+        private Options _options;
 
         #endregion
 
@@ -31,6 +32,7 @@ namespace DependencyChecker
         /// <param name="options">The options.</param>
         public void Run(Options options)
         {
+            _options = options;
             Initialize();
             RunAsync(options).Wait();
             CreateOutputDocument(options.ReportPath);
@@ -100,10 +102,10 @@ namespace DependencyChecker
             var packageStatuses = new List<PackageStatus>();
             foreach (var package in data.package)
             {
-                logger.LogInformation($"Checking package {package.id}");
+                _logger.LogInformation($"Checking package {package.id}");
                 var res = await GetPackageStatus(package.id, package.version);
                 packageStatuses.Add(res);
-                logger.LogInformation(string.Empty); // Blank line
+                _logger.LogInformation(string.Empty); // Blank line
             }
 
             return packageStatuses;
@@ -121,7 +123,7 @@ namespace DependencyChecker
             foreach (var packageMetadataResource in _packageMetadataResources)
             {
                 // Todo: Include Prerelease option
-                var results = await packageMetadataResource.GetMetadataAsync(packageId, false, false, logger, CancellationToken.None);
+                var results = await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None);
                 if (results.Count() != 0)
                 {
                     searchResult = results.Last();
@@ -132,7 +134,7 @@ namespace DependencyChecker
             // Return if not found
             if (searchResult == null)
             {
-                logger.LogError($"---> Package {packageId} is was not found on any source.");
+                _logger.LogError($"---> Package {packageId} is was not found on any source.");
                 return new PackageStatus
                 {
                     Id = packageId,
@@ -149,7 +151,7 @@ namespace DependencyChecker
             if (currentVersion.CompareTo(installedVersionParsed) == 1)
             {
                 outdated = true;
-                logger.LogWarning($"---> Package {packageId} is out of date. Current Version: {currentVersion}. Installed Version: {installedVersionParsed}");
+                _logger.LogWarning($"---> Package {packageId} is out of date. Current Version: {currentVersion}. Installed Version: {installedVersionParsed}");
             }
 
 
@@ -172,15 +174,15 @@ namespace DependencyChecker
         private void Initialize()
         {
             // Todo: show nuget config
-            logger.LogInformation("Using Sources:");
+            _logger.LogInformation("Using Sources:");
             var src = "https://api.nuget.org/v3/index.json";
             var sourceRepository = Repository.Factory.GetCoreV3(src, FeedType.HttpV3);
             var x = sourceRepository.GetResource<PackageMetadataResource>();
             _packageMetadataResources.Add(x);
-            logger.LogInformation(src);
+            _logger.LogInformation(src);
 
 
-            logger.LogInformation(string.Empty); // Blank line
+            _logger.LogInformation(string.Empty); // Blank line
         }
 
         /// <summary>
