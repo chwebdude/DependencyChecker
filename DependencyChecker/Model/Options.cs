@@ -30,6 +30,8 @@ namespace DependencyChecker.Model
         [Option("prerelease", Required = false, HelpText = "Defines if prereleases should be considered or not")]
         public bool IncludePrereleases { get; set; }
 
+        [Option("nuget-file", Required = false, HelpText = "An additional NuGet config file")]
+        public string CustomNuGetFile { get; set; }
         #endregion
     }
 }

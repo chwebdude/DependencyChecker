@@ -90,6 +90,7 @@
     <Compile Include="DependecyCheckerTestNetStandard.cs" />
     <Compile Include="DependecyCheckerTestNet462.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NuGetConfigTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestProjects\NetStandard\NetStandard\NetStandard\NetStandard.csproj">
@@ -98,6 +99,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="TestProjects\net462\packages.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestProjects\NuGet.Config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

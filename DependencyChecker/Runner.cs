@@ -22,6 +22,7 @@ namespace DependencyChecker
         private readonly ILogger _logger = new Logger();
 
         private readonly List<PackageMetadataResource> _packageMetadataResources = new List<PackageMetadataResource>();
+        public List<string> Sources { get; } = new List<string>();
 
         public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
         private Options _options;
@@ -210,11 +211,19 @@ namespace DependencyChecker
         /// </summary>
         private void Initialize()
         {
-            // Todo: show nuget config
             _logger.LogInformation("Using Sources:");
 
-
             var settings = Settings.LoadDefaultSettings(root: null);
+            if (!string.IsNullOrEmpty(_options.CustomNuGetFile))
+            {
+                var additionalSettings = Settings.LoadSpecificSettings(null, _options.CustomNuGetFile);
+                var section = additionalSettings.GetSection("packageSources");
+                foreach (var item in section.Items)
+                {
+                    settings.AddOrUpdate("packageSources", item);
+                }
+            }
+
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, Repository.Provider.GetCoreV3());
             var sourceRepository = sourceRepositoryProvider.GetRepositories();
             foreach (var repository in sourceRepository)
@@ -222,7 +231,7 @@ namespace DependencyChecker
                 var resource = repository.GetResource<PackageMetadataResource>();
                 _packageMetadataResources.Add(resource);
                 _logger.LogInformation("  " + repository + " \t - \t" + repository.PackageSource.Source);
-
+                Sources.Add(repository.PackageSource.Source);
             }
 
             _logger.LogInformation(string.Empty); // Blank line
