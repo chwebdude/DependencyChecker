@@ -18,7 +18,7 @@ namespace DependencyChecker
     {
         #region Fields
 
-        private readonly List<CodeProject> _codeProjects = new List<CodeProject>();
+        public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
 
         private readonly List<PackageMetadataResource> _packageMetadataResources = new List<PackageMetadataResource>();
         private readonly ILogger _logger = new Logger();
@@ -50,7 +50,7 @@ namespace DependencyChecker
             var projectTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Project.html"));
             var reportTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Report.html"));
             var projectsContent = "";
-            foreach (var codeProject in _codeProjects.Where(p => p.PackageStatuses.Count != 0))
+            foreach (var codeProject in CodeProjects.Where(p => p.PackageStatuses.Count != 0))
             {
                 var packageContent = "";
                 foreach (var packageStatus in codeProject.PackageStatuses)
@@ -132,6 +132,9 @@ namespace DependencyChecker
                 }
             }
 
+            // Parse Version information
+            var parsingResult = NuGetVersion.TryParse(installedVersion, out var installedVersionParsed);
+
             // Return if not found
             if (searchResult == null)
             {
@@ -140,13 +143,12 @@ namespace DependencyChecker
                 {
                     Id = packageId,
                     InstalledVersion = installedVersion,
-                    NotFound = true
+                    NotFound = true,
+                    NoLocalVersion = !parsingResult
                 };
             }
 
             // Compare installed versions
-            NuGetVersion installedVersionParsed;
-            var parsingResult = NuGetVersion.TryParse(installedVersion, out installedVersionParsed);
             var currentVersion = searchResult.Identity.Version;
             var outdated = false;
             if (currentVersion.CompareTo(installedVersionParsed) == 1)
@@ -207,7 +209,7 @@ namespace DependencyChecker
                 {
                     // Get information in old Format
                     var packages = await GetPackagesFromPackgesConfig(packageFile);
-                    _codeProjects.Add(new CodeProject
+                    CodeProjects.Add(new CodeProject
                     {
                         Name = file.Name,
                         NuGetFile = packageFile,
