@@ -24,7 +24,7 @@ namespace DependencyChecker.Model
         [Option("search-path", Required = true, HelpText = "Defines the search path of the csproj files.")]
         public string SearchPath { get; set; }
 
-        [Option("search-recursive", Required = true, HelpText = "Defines if the search is recursive.")]
+        [Option("search-recursive", Required = false, HelpText = "Defines if the search is recursive.")]
         public bool SearchRec { get; set; }
 
         [Option("prerelease", Required = true, HelpText = "Defines if prereleases should be considered or not")]
