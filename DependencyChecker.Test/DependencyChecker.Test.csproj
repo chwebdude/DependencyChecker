@@ -87,10 +87,17 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependecyCheckerTestNetStandard.cs" />
     <Compile Include="DependecyCheckerTestNet462.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestProjects\NetStandard\NetStandard\NetStandard.sln">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestProjects\NetStandard\NetStandard\NetStandard\NetStandard.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="TestProjects\net462\packages.config">

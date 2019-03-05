@@ -113,6 +113,36 @@ namespace DependencyChecker
         }
 
         /// <summary>
+        ///     Gets the packages from packges configuration.
+        /// </summary>
+        /// <param name="packageFile">The package file.</param>
+        /// <returns>Task&lt;List&lt;PackageStatus&gt;&gt;.</returns>
+        private async Task<List<PackageStatus>> GetPackagesFromCsproj(string csprojFile)
+        {
+            // Parse file content
+            var serializer = new XmlSerializer(typeof(Project));
+            var data = (Project)serializer.Deserialize(new XmlTextReader(csprojFile));
+            
+            var packageStatuses = new List<PackageStatus>();
+
+
+            // Crawl trough all Item Groups
+            foreach (var itemGroup in data.ItemGroup)
+            {
+                // Crawl trough all PackageReferences
+                foreach (var package in itemGroup.PackageReference)
+                {
+                    _logger.LogInformation($"Checking package {package.Include}");
+                    var res = await GetPackageStatus(package.Include, package.Version);
+                    packageStatuses.Add(res);
+                    _logger.LogInformation(string.Empty); // Blank line
+                }
+            }
+
+            return packageStatuses;
+        }
+
+        /// <summary>
         ///     Gets the package status.
         /// </summary>
         /// <param name="packageId">The package identifier.</param>
@@ -213,6 +243,17 @@ namespace DependencyChecker
                     {
                         Name = file.Name,
                         NuGetFile = packageFile,
+                        PackageStatuses = packages
+                    });
+                }
+                else
+                {
+                    // Try to get package information from csproj file
+                    var packages = await GetPackagesFromCsproj(file.FullName);
+                    CodeProjects.Add(new CodeProject
+                    {
+                        Name = file.Name,
+                        NuGetFile = file.Name,
                         PackageStatuses = packages
                     });
                 }

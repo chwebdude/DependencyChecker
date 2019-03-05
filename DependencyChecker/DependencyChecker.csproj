@@ -88,11 +88,17 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner.cs" />
+    <Compile Include="Schema\Csproj.cs">
+      <DependentUpon>Csproj.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Schema\Packages_config.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Schema\Csproj.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Schema\Packages.config.xsd">
       <SubType>Designer</SubType>
     </None>
