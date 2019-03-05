@@ -92,9 +92,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestProjects\NetStandard\NetStandard\NetStandard.sln">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestProjects\NetStandard\NetStandard\NetStandard\NetStandard.csproj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
