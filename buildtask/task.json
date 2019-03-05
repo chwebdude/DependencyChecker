@@ -111,16 +111,6 @@
             "visibleRule": "createBadge = true && createBadgePerProject = false"
         },
         {
-            "name": "badgePath",
-            "type": "filePath",
-            "label": "Badge Path",
-            "defaultValue": "$(Build.ArtifactStagingDirectory)\\dependenciesStatus.svg",
-            "required": true,
-            "helpMarkDown": "Where to save the badge and its name.",
-            "groupName": "badge",
-            "visibleRule": "createBadge = true"
-        },
-        {
             "name": "style",
             "type": "pickList",
             "label": "Badge Style",
