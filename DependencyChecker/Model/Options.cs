@@ -27,7 +27,7 @@ namespace DependencyChecker.Model
         [Option("search-recursive", Required = false, HelpText = "Defines if the search is recursive.")]
         public bool SearchRec { get; set; }
 
-        [Option("prerelease", Required = true, HelpText = "Defines if prereleases should be considered or not")]
+        [Option("prerelease", Required = false, HelpText = "Defines if prereleases should be considered or not")]
         public bool IncludePrereleases { get; set; }
 
         #endregion
