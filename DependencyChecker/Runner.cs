@@ -1,4 +1,5 @@
 ﻿using DependencyChecker.Model;
+using DotBadge;
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Protocol;
@@ -22,10 +23,15 @@ namespace DependencyChecker
         private readonly ILogger _logger = new Logger();
 
         private readonly List<PackageMetadataResource> _packageMetadataResources = new List<PackageMetadataResource>();
-        public List<string> Sources { get; } = new List<string>();
 
         public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
         private Options _options;
+
+        #endregion
+
+        #region Properties
+
+        public List<string> Sources { get; } = new List<string>();
 
         #endregion
 
@@ -40,15 +46,82 @@ namespace DependencyChecker
             RunAsync(options).Wait();
             if (options.CreateReport)
             {
-                CreateOutputDocument(options.ReportPath);
+                CreateOutputDocument();
+            }
+
+            if (options.CreateBadge)
+            {
+                CreateOutputBadges();
+            }
+        }
+
+        /// <summary>
+        ///     Creates the output badges.
+        /// </summary>
+        private void CreateOutputBadges()
+        {
+            var bp = new BadgePainter();
+
+            // Determine if provided path is a file
+            if (_options.BadgePerProject)
+            {
+                Directory.CreateDirectory(_options.BadgePath);
+                // Create a badge for each project
+                foreach (var codeProject in CodeProjects)
+                {
+                    var filename = Path.Combine(_options.BadgePath, "Dependencies_" + codeProject.Name + ".svg");
+                    if (codeProject.PackageStatuses.Any(p => p.NotFound))
+                    {
+                        File.WriteAllText(filename, bp.DrawSVG("Dependencies: " + codeProject.Name, "Some not found", ColorScheme.Red, _options.BadgeStyle));
+                        continue;
+                    }
+
+                    if (codeProject.PackageStatuses.Any(p => p.NoLocalVersion))
+                    {
+                        File.WriteAllText(filename, bp.DrawSVG("Dependencies: " + codeProject.Name, "Local version not set", ColorScheme.Red, _options.BadgeStyle));
+                        continue;
+                    }
+
+                    if (codeProject.PackageStatuses.Any(p => p.Outdated))
+                    {
+                        File.WriteAllText(filename, bp.DrawSVG("Dependencies: " + codeProject.Name, "Outdated", ColorScheme.Yellow, _options.BadgeStyle));
+                        continue;
+                    }
+
+                    File.WriteAllText(filename, bp.DrawSVG("Dependencies: " + codeProject.Name, "Up to date", ColorScheme.Green, _options.BadgeStyle));
+                }
+            }
+            else
+            {
+                // Create only one badge
+                var fi = new FileInfo(_options.BadgePath);
+                Directory.CreateDirectory(fi.DirectoryName); // Create directory tree
+                if (CodeProjects.Any(c => c.PackageStatuses.Any(p => p.NotFound)))
+                {
+                    File.WriteAllText(_options.BadgePath, bp.DrawSVG("Dependencies", "Some not found", ColorScheme.Red, _options.BadgeStyle));
+                    return;
+                }
+
+                if (CodeProjects.Any(c => c.PackageStatuses.Any(p => p.NoLocalVersion)))
+                {
+                    File.WriteAllText(_options.BadgePath, bp.DrawSVG("Dependencies", "Local version not set", ColorScheme.Red, _options.BadgeStyle));
+                    return;
+                }
+
+                if (CodeProjects.Any(c => c.PackageStatuses.Any(p => p.Outdated)))
+                {
+                    File.WriteAllText(_options.BadgePath, bp.DrawSVG("Dependencies", "Outdated", ColorScheme.Yellow, _options.BadgeStyle));
+                    return;
+                }
+
+                File.WriteAllText(_options.BadgePath, bp.DrawSVG("Dependencies", "Up to date", ColorScheme.Green, _options.BadgeStyle));
             }
         }
 
         /// <summary>
         ///     Creates the output document.
         /// </summary>
-        /// <param name="dest">The dest.</param>
-        private void CreateOutputDocument(string dest)
+        private void CreateOutputDocument()
         {
             var currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var packageTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Package.html"));
@@ -87,15 +160,16 @@ namespace DependencyChecker
             }
 
             var report = reportTemplate.Replace("{{PROJECTS}}", projectsContent);
-            var directory = new FileInfo(dest).Directory.FullName;
+            var directory = new FileInfo(_options.ReportPath).Directory.FullName;
             Directory.CreateDirectory(directory);
-            File.WriteAllText(dest, report);
+            File.WriteAllText(_options.ReportPath, report);
         }
 
+
         /// <summary>
-        ///     Gets the packages from packges configuration.
+        /// Gets the packages from packges configuration.
         /// </summary>
-        /// <param name="packageFile">The package file.</param>
+        /// <param name="csprojFile">The csproj file.</param>
         /// <returns>Task&lt;List&lt;PackageStatus&gt;&gt;.</returns>
         private async Task<List<PackageStatus>> GetPackagesFromCsproj(string csprojFile)
         {
@@ -123,7 +197,7 @@ namespace DependencyChecker
         }
 
         /// <summary>
-        ///     Gets the packages from packges configuration.
+        /// Gets the packages from packges configuration.
         /// </summary>
         /// <param name="packageFile">The package file.</param>
         /// <returns>Task&lt;List&lt;PackageStatus&gt;&gt;.</returns>
@@ -148,7 +222,7 @@ namespace DependencyChecker
         }
 
         /// <summary>
-        ///     Gets the package status.
+        /// Gets the package status.
         /// </summary>
         /// <param name="packageId">The package identifier.</param>
         /// <param name="installedVersion">The installed version.</param>
@@ -213,7 +287,7 @@ namespace DependencyChecker
         {
             _logger.LogInformation("Using Sources:");
 
-            var settings = Settings.LoadDefaultSettings(root: null);
+            var settings = Settings.LoadDefaultSettings(null);
             if (!string.IsNullOrEmpty(_options.CustomNuGetFile))
             {
                 var additionalSettings = Settings.LoadSpecificSettings(null, _options.CustomNuGetFile);
@@ -248,6 +322,12 @@ namespace DependencyChecker
             var searchMode = options.SearchRec ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var csprojFiles = Directory.GetFiles(options.SearchPath, "*.csproj", searchMode);
 
+            _logger.LogInformation("Found projects:");
+            foreach (var csprojFile in csprojFiles)
+            {
+                _logger.LogInformation("  - " + csprojFile);
+            }
+
             foreach (var csprojFile in csprojFiles)
             {
                 // Check if a packages.config is beside project file
@@ -260,7 +340,7 @@ namespace DependencyChecker
                     var packages = await GetPackagesFromPackgesConfig(packageFile);
                     CodeProjects.Add(new CodeProject
                     {
-                        Name = file.Name,
+                        Name = file.Name.Replace(file.Extension, string.Empty),
                         NuGetFile = packageFile,
                         PackageStatuses = packages
                     });
@@ -271,7 +351,7 @@ namespace DependencyChecker
                     var packages = await GetPackagesFromCsproj(file.FullName);
                     CodeProjects.Add(new CodeProject
                     {
-                        Name = file.Name,
+                        Name = file.Name.Replace(file.Extension, string.Empty),
                         NuGetFile = file.Name,
                         PackageStatuses = packages
                     });

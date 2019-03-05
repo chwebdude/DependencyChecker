@@ -25,7 +25,7 @@ Search subdirectories for the packages files.
 
 ### Create Badge
 
-Create a badge using [shields.io](https://shields.io). Requires a internet connection!
+Create a badge using [DotBadge](https://github.com/rebornix/DotBadge).
 
 ### Badge Path
 
@@ -33,7 +33,7 @@ Where to save the badge and its name.
 
 ### Style
 
-The style of the badge. See [https://shields.io/#styles](https://shields.io/#styles)
+The style of the badge.
 
 ### Create Report
 

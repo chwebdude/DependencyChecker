@@ -1,6 +1,6 @@
-﻿using System;
-using CommandLine;
+﻿using CommandLine;
 using DependencyChecker.Model;
+using System;
 
 namespace DependencyChecker
 {
@@ -23,10 +23,10 @@ namespace DependencyChecker
                         Console.WriteLine(string.Concat("\t", propertyInfo.Name, ":\t", propertyInfo.GetValue(options)));
                     }
 
-                    if (options.CreateBadge && (string.IsNullOrEmpty(options.BadgePath) || string.IsNullOrEmpty(options.BadgeStyle)))
+                    if (options.CreateBadge && (string.IsNullOrEmpty(options.BadgePath)))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("For badge creation style and path must be set!");
+                        Console.WriteLine("For badge creation path must be set!");
                         return;
                     }
 
@@ -37,6 +37,7 @@ namespace DependencyChecker
                         return;
                     }
 
+                    Console.WriteLine(); // Blank line
                     new Runner().Run(options);
                 });
         }

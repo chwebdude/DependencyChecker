@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using DotBadge;
 
 namespace DependencyChecker.Model
 {
@@ -10,7 +11,10 @@ namespace DependencyChecker.Model
         public string BadgePath { get; set; }
 
         [Option("badge-style", Required = false, HelpText = "Defines the style of the badge.")]
-        public string BadgeStyle { get; set; }
+        public Style BadgeStyle { get; set; }
+
+        [Option("badge-per-project", Required = false, HelpText = "Generate a badge for each project.")]
+        public bool BadgePerProject { get; set; }
 
         [Option("create-badge", Required = false, HelpText = "Defines if a badge needs to be generated.")]
         public bool CreateBadge { get; set; }

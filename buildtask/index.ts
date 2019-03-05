@@ -14,19 +14,26 @@ async function run() {
         var createReport = tl.getBoolInput("createReport", true);
         var reportPath = tl.getPathInput("reportPath");
         var createBadge = tl.getBoolInput("createBadge");
+        var createBadgePerProject = tl.getBoolInput("createBadgePerProject");
+        var badgeDirPath = tl.getPathInput("badgeDirPath");
         var badgePath = tl.getPathInput("badgePath");
         var style = tl.getInput("style");
         var nuGetFile = tl.getPathInput("customNuGetfile", false);
 
         let toolPath = __dirname + "\\..\\bin\\DependencyChecker.exe";
 
-        let arg = ["--search-path", path, "--report-path", reportPath, "--badge-path", badgePath, "--badge-style", style];
+        let arg = ["--search-path", path, "--report-path", reportPath];
         if (createReport)
-            arg.push("--create-report")
-        if (createBadge)
-            arg.push("--create-badge")
+            arg.push("--create-report");
+        if (createBadge){
+            if(createBadgePerProject){
+                arg.push("--create-badge", "--badge-path", badgeDirPath, "--badge-style", style);
+            }else{
+                arg.push("--create-badge", "--badge-path", badgePath, "--badge-style", style);
+            }            
+        }
         if (searchRecursive)
-            arg.push("--search-recursive")
+            arg.push("--search-recursive");
         if (includePrerelease)
             arg.push("--prerelease")
         if(nuGetFile != "")        
