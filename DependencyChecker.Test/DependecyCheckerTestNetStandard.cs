@@ -31,7 +31,7 @@ namespace DependencyChecker.Test
             Assert.IsNotNull(_projects);
             Assert.IsTrue(_projects.Count == 1);
             
-            Assert.AreEqual("NetStandard.csproj", _projects.First().Name);
+            Assert.AreEqual("NetStandard", _projects.First().Name);
             Assert.IsTrue(_projects.First().NuGetFile.EndsWith("NetStandard.csproj"));
         }
 
