@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using DependencyChecker.Model;
+using NuGet.Common;
+using NuGet.Protocol;
+using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -6,15 +11,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using DependencyChecker.Model;
-using NuGet.Common;
-using NuGet.Protocol;
-using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
 
 namespace DependencyChecker
 {
-    internal class Runner
+    public class Runner
     {
         #region Fields
 
@@ -35,7 +35,8 @@ namespace DependencyChecker
             _options = options;
             Initialize();
             RunAsync(options).Wait();
-            CreateOutputDocument(options.ReportPath);
+            if (options.CreateReport)
+                CreateOutputDocument(options.ReportPath);
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace DependencyChecker
         {
             // Parse file content
             var serializer = new XmlSerializer(typeof(packages));
-            var data = (packages) serializer.Deserialize(new XmlTextReader(packageFile));
+            var data = (packages)serializer.Deserialize(new XmlTextReader(packageFile));
 
 
             // Check status of each package

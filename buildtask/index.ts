@@ -9,19 +9,26 @@ async function run() {
     try {
 
         var path = tl.getInput("path");
-        var searchRecursive = tl.getBoolInput("searchRecursive") ? "--search-recursive" : "";
-        var includePrerelease = tl.getBoolInput("includePrerelease", true) ? "--prerelease" : "";
-        var createReport = tl.getBoolInput("createReport", true) ? "--create-report" : "";
+        var searchRecursive = tl.getBoolInput("searchRecursive");
+        var includePrerelease = tl.getBoolInput("includePrerelease", true);
+        var createReport = tl.getBoolInput("createReport", true);
         var reportPath = tl.getInput("reportPath");
-        var createBadge = tl.getBoolInput("createBadge") ? " --create-badge" : "";
+        var createBadge = tl.getBoolInput("createBadge");
         var badgePath = tl.getInput("badgePath");
         var style = tl.getInput("style");
 
         let toolPath = __dirname + "\\..\\bin\\DependencyChecker.exe";
 
         // let arg = [] path + searchRecursive + includePrerelease + createReport + reportPath + createBadge + badgePath + style;
-        let arg = ["--search-path", path, searchRecursive, includePrerelease, createReport, "--report-path", reportPath, createBadge,
-            "--badge-path", badgePath, "--badge-style", style];
+        let arg = ["--search-path", path, "--report-path", reportPath, "--badge-path", badgePath, "--badge-style", style];
+        if (createReport)
+            arg.push("--create-report")
+        if (createBadge)
+            arg.push("--create-badge")
+        if (searchRecursive)
+            arg.push("--search-recursive")
+        if (includePrerelease)
+            arg.push("--prerelease")
 
         let tool: trm.ToolRunner = tl.tool(toolPath).arg(arg);
         let result: number = await tool.exec();
