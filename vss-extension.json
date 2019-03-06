@@ -51,7 +51,7 @@
             "addressable": true
         },
         {
-            "path": "buildtab/dist",
+            "path": "buildtab/dist/tab.js",
             "adressable": true, 
             "packagePath": "buildtab"
         },
