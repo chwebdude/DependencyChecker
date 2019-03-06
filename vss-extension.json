@@ -79,7 +79,7 @@
                 "ms.vss-build-web.build-results-view"
             ],
             "properties": {
-                "name": "Dependency status",
+                "name": "Dependency Status",
                  "uri": "buildtab/tab.html"
             }
         }
@@ -115,5 +115,12 @@
     "repository": {
         "type": "git",
         "uri": "https://github.com/chwebdude/DependencyChecker"
-    }
+    },
+    "badges": [
+        {
+            "href": "https://dev.azure.com/webdude/DependencyChecker/_build?definitionId=22&_a=summary",
+            "uri":"https://dev.azure.com/webdude/DependencyChecker/_apis/build/status/DependencyChecker",
+            "description": "CI Build" 
+        }
+    ]
 }
