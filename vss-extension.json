@@ -52,8 +52,7 @@
         },
         {
             "path": "buildtab/dist",
-            "adressable": true,
-            "packagePath": "scripts"
+            "adressable": true
         },
         {
             "path": "buildtab/node_modules/vss-web-extension-sdk/lib",
