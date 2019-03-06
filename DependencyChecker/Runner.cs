@@ -290,11 +290,17 @@ namespace DependencyChecker
             var settings = Settings.LoadDefaultSettings(null);
             if (!string.IsNullOrEmpty(_options.CustomNuGetFile))
             {
-                var additionalSettings = Settings.LoadSpecificSettings(null, _options.CustomNuGetFile);
-                var section = additionalSettings.GetSection("packageSources");
-                foreach (var item in section.Items)
+                if(File.Exists(_options.CustomNuGetFile))
+                {                    
+                    var additionalSettings = Settings.LoadSpecificSettings(null, _options.CustomNuGetFile);
+                    var section = additionalSettings.GetSection("packageSources");
+                    foreach (var item in section.Items)
+                    {
+                        settings.AddOrUpdate("packageSources", item);
+                    }
+                }else
                 {
-                    settings.AddOrUpdate("packageSources", item);
+                 _logger.LogWarning($"Additional NuGet Config \"{_options.CustomNuGetFile}\" not found");   
                 }
             }
 
