@@ -46,7 +46,8 @@
         },
 
         {
-            "path": "buildtab/tab.html"
+            "path": "buildtab/tab.html",
+            "addressable": true
         },
         {
             "path": "buildtab/dist",
