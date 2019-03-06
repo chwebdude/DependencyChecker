@@ -23,6 +23,9 @@
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
+    "scopes": [
+        "vso.build_execute"
+    ],    
     "categories": [
         "Azure Pipelines"
     ],
@@ -40,6 +43,20 @@
             "path": "buildtask/icon.png"
         },{
             "path": "buildtask/bin"
+        },
+
+        {
+            "path": "buildtab/tab.html"
+        },
+        {
+            "path": "buildtab/dist",
+            "adressable": true,
+            "packagePath": "scripts"
+        },
+        {
+            "path": "buildtab/node_modules/vss-web-extension-sdk/lib",
+            "addressable": true,
+            "packagePath": "lib"
         }
     ],
     "contributions": [
@@ -51,6 +68,18 @@
             ],
             "properties": {
                 "name": "buildtask"
+            }
+        },
+        {
+            "id": "build-info-tab",
+            "type": "ms.vss-build-web.build-results-tab",
+            "description": "Show report as tab.",
+            "targets": [
+                "ms.vss-build-web.build-results-view"
+            ],
+            "properties": {
+                "name": "Dependency status",
+                 "uri": "buildtab/tab.html"
             }
         }
     ],

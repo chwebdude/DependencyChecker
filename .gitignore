@@ -514,3 +514,5 @@ healthchecksdb
 # End of https://www.gitignore.io/api/csharp,visualstudio,visualstudiocode
 /buildtask/dist
 *.vsix
+
+**/dist/*.js
