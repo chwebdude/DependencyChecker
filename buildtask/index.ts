@@ -26,10 +26,17 @@ async function run() {
         if (createReport)
             arg.push("--create-report");
         if (createBadge){
+            var realStyle = "Flat";
+            switch(style){
+                case "flat": realStyle = "Flat"; break;
+                case "flat-square": realStyle = "FlatSquare"; break;
+                case "plastic": realStyle = "Plastic"; break;
+            }
+
             if(createBadgePerProject){
-                arg.push("--create-badge", "--badge-path", badgeDirPath, "--badge-style", style);
+                arg.push("--create-badge", "--badge-path", badgeDirPath, "--badge-style", realStyle);
             }else{
-                arg.push("--create-badge", "--badge-path", badgePath, "--badge-style", style);
+                arg.push("--create-badge", "--badge-path", badgePath, "--badge-style", realStyle);
             }            
         }
         if (searchRecursive)
