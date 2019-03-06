@@ -1,5 +1,7 @@
 # NuGet Dependency Checker
 
+[![Build status](https://dev.azure.com/webdude/DependencyChecker/_apis/build/status/DependencyChecker)](https://dev.azure.com/webdude/DependencyChecker/_build/latest?definitionId=22)
+
 Simple Tool for checking NuGet Dependencies and publish a report as build artifact *(no dashboard widget at the moment!)*.
 
 ### Configuration
