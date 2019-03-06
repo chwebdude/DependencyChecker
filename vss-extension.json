@@ -51,9 +51,8 @@
             "addressable": true
         },
         {
-            "path": "buildtab/dist/tab.js",
-            "adressable": true, 
-            "packagePath": "buildtab"
+            "path": "buildtab/tab.js",
+            "adressable": true
         },
         {
             "path": "buildtab/node_modules/vss-web-extension-sdk/lib",

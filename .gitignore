@@ -516,3 +516,4 @@ healthchecksdb
 *.vsix
 
 **/dist/*.js
+buildtab/*.js
