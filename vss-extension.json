@@ -24,7 +24,8 @@
         }
     ],    
     "scopes": [
-        "vso.build_execute"
+        "vso.build_execute",
+        "vso.extension.data_write"
     ],    
     "categories": [
         "Azure Pipelines"
