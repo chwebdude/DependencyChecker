@@ -53,7 +53,7 @@
         {
             "path": "buildtab/tab.js",
             "adressable": true,
-            "packagePath": "scripts"
+            "packagePath": "scripts/tab.js"
         },
         {
             "path": "buildtab/node_modules/vss-web-extension-sdk/lib",
