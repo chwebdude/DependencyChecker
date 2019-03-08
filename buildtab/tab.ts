@@ -51,8 +51,10 @@ export class InfoTab extends Controls.BaseControl {
 
 							console.log("ob", ob);
 							var template = $("#template").html();
+							console.log("template", template);
 							Mustache.parse(template);
 							var rendered = Mustache.render(template, { Name: "TestName" });
+							console.log("rendered", rendered);
 							$("#target").html(rendered);
 						});
 					}
