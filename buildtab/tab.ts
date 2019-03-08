@@ -52,7 +52,7 @@ export class InfoTab extends Controls.BaseControl {
 							console.log("ob", ob);
 							var template = $("#template").html();
 							Mustache.parse(template);
-							var rendered = Mustache.render(template, { name: "TestName" });
+							var rendered = Mustache.render(template, { Name: "TestName" });
 							$("#target").html(rendered);
 						});
 					}
