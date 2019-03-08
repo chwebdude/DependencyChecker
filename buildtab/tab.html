@@ -88,11 +88,11 @@
                                 {{^NoLocalVersion}}
                                     {{^Outdated}}
                                     {{^NotFound}}
-                                            <tr class="table-warning">
+                                            <tr>
                                                 {{> packageId}}
                                                 <td>{{InstalledVersion}}</td>
                                                 <td>{{CurrentVersion}}</td>
-                                                <td>No local version found</td>
+                                                <td></td>
                                             </tr>
                                         {{/NotFound}}
                                     {{/Outdated}}
