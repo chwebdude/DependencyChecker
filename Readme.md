@@ -31,7 +31,7 @@ Search subdirectories for the packages files.
 ### Include Prerelease
 Include prerelease packages for search?
 
-### Custom NuGet config file.
+### Custom NuGet config file
 Define your custom NuGet config which has additional sources.
 
 ### Create Badge
