@@ -22,7 +22,7 @@ async function run() {
 
         let toolPath = __dirname + "\\..\\bin\\DependencyChecker.exe";
 
-        let arg = ["--search-path", path, "--report-path", reportPath];
+        let arg = ["--dev-ops-result-file","--search-path", path, "--report-path", reportPath];
         if (createReport)
             arg.push("--create-report");
         if (createBadge){

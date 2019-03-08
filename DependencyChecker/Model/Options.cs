@@ -36,6 +36,9 @@ namespace DependencyChecker.Model
 
         [Option("nuget-file", Required = false, HelpText = "An additional NuGet config file")]
         public string CustomNuGetFile { get; set; }
+
+        [Option("dev-ops-result-file", Required = false, HelpText = "Create a Azure DevOps result file.")]
+        public bool CreateDevOpsResultFile { get; set; }
         #endregion
     }
 }
