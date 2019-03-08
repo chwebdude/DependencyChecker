@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/jquery": "~2.0.34",
     "@types/q": "0.0.32",
+    "mustache": "^3.0.1",
     "vss-web-extension-sdk": "5.131.0"
   }
 }

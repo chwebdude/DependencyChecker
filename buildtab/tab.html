@@ -2,6 +2,7 @@
 
 <head>
     <script src="../lib/VSS.SDK.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
 
     <script type="text/javascript">
         VSS.init({
@@ -11,10 +12,11 @@
             }
         });
 
-        VSS.ready(function () {            
-             require(["scripts/tab"], function () { });
+
+        VSS.ready(function () {
+            require(["scripts/tab"], function () { });
         });   
-    </script>    
+    </script>
     <style>
         .build-info {
             padding: 10px;
@@ -22,33 +24,36 @@
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    
+        <script id="template" type="x-tmpl-mustache">
+                <div class="container">
+                    <h1>{{NAME}}</h1>
+                    <h6>{{NUGETPATH}}</h6>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Package</th>
+                                <th scope="col">Installed Version</th>
+                                <th scope="col">Current Version</th>
+                                <th scope="col">Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="{{STYLE}}">
+                                <th scope="row">{{LINK}}</th>
+                                <td>{{INSTALLED_VERSION}}</td>
+                                <td>{{CURRENT_VERSION}}</td>
+                                <td>{{REMARK}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </script>
 </head>
 
 <body>
     <div class="build-info">
-        <div class="container">
-            <h1>{{NAME}}</h1>
-            <h6>{{NUGETPATH}}</h6>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Package</th>
-                        <th scope="col">Installed Version</th>
-                        <th scope="col">Current Version</th>
-                        <th scope="col">Remark</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="{{STYLE}}">
-                        <th scope="row">{{LINK}}</th>
-                        <td>{{INSTALLED_VERSION}}</td>
-                        <td>{{CURRENT_VERSION}}</td>
-                        <td>{{REMARK}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <div id="target"></div>
     </div>
 </body>
 
