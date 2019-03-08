@@ -68,7 +68,7 @@ namespace DependencyChecker
             var serialized = JsonConvert.SerializeObject(CodeProjects);
             var fi =new FileInfo("dependcies_check_result.json");
             Directory.CreateDirectory(fi.DirectoryName);
-            File.WriteAllText(fi.FullName, serialized, Encoding.UTF8);
+            File.WriteAllText(fi.FullName, serialized);
             Console.WriteLine("##vso[task.addattachment type=dependcies_check_result;name=dependcies_check_result;]"+fi.FullName);
         }
 
