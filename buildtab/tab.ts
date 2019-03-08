@@ -50,7 +50,13 @@ export class InfoTab extends Controls.BaseControl {
 							var rendered = Mustache.render(template, ob);
 							$("#target").html(rendered);
 
+							// Hide loader
 							$("#notLoaded").detach();
+
+							// Attach to window resize to show scrollbar (workaround)
+							$(window).resize(() => {
+								$("#target").height($(window).height());
+							})
 						});
 					}
 				});
