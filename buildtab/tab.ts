@@ -29,28 +29,19 @@ export class InfoTab extends Controls.BaseControl {
 				var taskClient = DT_Client.getClient();
 				console.log("taskClient", taskClient);
 				taskClient.getPlanAttachments(vsoContext.project.id, "build", build.orchestrationPlan.planId, "dependcies_check_result").then((taskAttachments) => {
-					$.each(taskAttachments, (index, taskAttachment) => {
-						if (taskAttachment._links && taskAttachment._links.self && taskAttachment._links.self.href) {
-							var link = taskAttachment._links.self.href;
-							console.log("link", link);
-							var attachmentName = taskAttachment.name;
-							console.log("attachmentName", attachmentName);
-							// do some thing here
-							// see how to get auth https://www.visualstudio.com/en-us/docs/report/analytics/building-extension-against-analytics-service
-							$.ajax({ url: link, })
-								.done(res => {
-									console.log(res);
-									var template = $("#template").html();
-									Mustache.parse(template);
-									var rendered = Mustache.render(template, {name: "TestName"});
-									$("#target").html(rendered);
-								})
-								.fail(error => {
-									console.error(error);
-								});
 
-						}
-					});
+					if (taskAttachments.length == 1) {
+						var recId = taskAttachments[0].recordId;
+						var timelineId = taskAttachments[0].timelineId;
+
+						taskClient.getAttachmentContent(vsoContext.project.id, "build", build.orchestrationPlan.planId, timelineId, recId, "dependcies_check_result", "dependcies_check_result").then((attachementContent) => {
+							console.log("attachementContent", attachementContent);
+							var template = $("#template").html();
+							Mustache.parse(template);
+							var rendered = Mustache.render(template, { name: "TestName" });
+							$("#target").html(rendered);
+						});
+					}					
 				});
 
 			});
