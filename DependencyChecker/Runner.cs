@@ -6,6 +6,7 @@ using NuGet.Configuration;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
+using Stubble.Core.Builders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -140,41 +141,14 @@ namespace DependencyChecker
         private void CreateOutputDocument()
         {
             var currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var packageTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Package.html"));
-            var projectTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Project.html"));
+            var contentTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Content.html"));
             var reportTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Report.html"));
-            var projectsContent = "";
-            foreach (var codeProject in CodeProjects.Where(p => p.PackageStatuses.Count != 0))
-            {
-                var packageContent = "";
-                foreach (var packageStatus in codeProject.PackageStatuses)
-                {
-                    var package = string.Copy(packageTemplate).Replace("{{INSTALLED_VERSION}}", packageStatus.InstalledVersion).Replace("{{CURRENT_VERSION}}", packageStatus.CurrentVersion);
-                    package = packageStatus.ProjectUrl == null
-                        ? package.Replace("{{LINK}}", string.Format("{0}", packageStatus.Id))
-                        : package.Replace("{{LINK}}", string.Format("<a href=\"{0}\" target = \"_blank\">{1}</a>", packageStatus.ProjectUrl, packageStatus.Id));
-                    if (packageStatus.NotFound)
-                    {
-                        package = package.Replace("{{REMARK}}", "Not Found").Replace("{{STYLE}}", "table-danger");
-                    }
-                    else if (!packageStatus.Outdated)
-                    {
-                        package = !packageStatus.NoLocalVersion
-                            ? package.Replace("{{REMARK}}", "").Replace("{{STYLE}}", "")
-                            : package.Replace("{{REMARK}}", "No local version found").Replace("{{STYLE}}", "table-warning");
-                    }
-                    else
-                    {
-                        package = package.Replace("{{REMARK}}", "Outdated").Replace("{{STYLE}}", "table-warning");
-                    }
 
-                    packageContent = string.Concat(packageContent, package, "\n");
-                }
+            // Render Content
+            var stubble = new StubbleBuilder().Build();
+            var projectsContent = stubble.Render(contentTemplate, new { Projects = CodeProjects });
 
-                var projectContent = string.Copy(projectTemplate).Replace("{{NAME}}", codeProject.Name).Replace("{{NUGETPATH}}", codeProject.NuGetFile).Replace("{{PACKAGES}}", packageContent);
-                projectsContent = string.Concat(projectsContent, projectContent, "\n");
-            }
-
+            // Insert content into report file
             var report = reportTemplate.Replace("{{PROJECTS}}", projectsContent);
             var directory = new FileInfo(_options.ReportPath).Directory.FullName;
             Directory.CreateDirectory(directory);
