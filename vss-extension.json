@@ -15,7 +15,6 @@
         "Continuous Integration",
         "Continuous Delivery",
         "Build",
-        "Release",
         "Quality"
     ],
     "targets": [
@@ -23,8 +22,12 @@
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
+    "scopes": [
+        "vso.build_execute",
+        "vso.extension.data_write"
+    ],    
     "categories": [
-        "Build and release"
+        "Azure Pipelines"
     ],
     "icons": {
         "default": "images/extension-icon.png"        
@@ -40,6 +43,26 @@
             "path": "buildtask/icon.png"
         },{
             "path": "buildtask/bin"
+        },
+
+        {
+            "path": "buildtab/tab.html",
+            "addressable": true
+        },
+        {
+            "path": "buildtab/dist",
+            "addressable": true,
+            "packagePath": "scripts"
+        },
+        {
+            "path": "DependencyChecker/Templates",
+            "addressable": true,
+            "packagePath": "templates"
+        },
+        {
+            "path": "buildtab/node_modules/vss-web-extension-sdk/lib",
+            "addressable": true,
+            "packagePath": "lib"
         }
     ],
     "contributions": [
@@ -52,6 +75,18 @@
             "properties": {
                 "name": "buildtask"
             }
+        },
+        {
+            "id": "build-info-tab",
+            "type": "ms.vss-build-web.build-results-tab",
+            "description": "Show report as tab.",
+            "targets": [
+                "ms.vss-build-web.build-results-view"
+            ],
+            "properties": {
+                "name": "Dependency Status",
+                 "uri": "buildtab/tab.html"
+            }
         }
     ],
     "content":{
@@ -61,6 +96,9 @@
     },
     "screenshots":[
         {
+            "path": "images/reportTab.png"
+        },
+        {
             "path": "images/report.jpg"
         },
         {
@@ -68,7 +106,7 @@
         },
         {
             "path": "images/overview.jpg"
-        }
+        }        
     ],
 
     "links": {
@@ -85,5 +123,12 @@
     "repository": {
         "type": "git",
         "uri": "https://github.com/chwebdude/DependencyChecker"
-    }
+    },
+    "badges": [
+        {
+            "href": "https://dev.azure.com/webdude/DependencyChecker/_build?definitionId=22&_a=summary",
+            "uri":"https://dev.azure.com/webdude/DependencyChecker/_apis/build/status/DependencyChecker",
+            "description": "CI Build" 
+        }
+    ]
 }

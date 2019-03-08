@@ -5,9 +5,7 @@
         "sourceMap": false,
         "moduleResolution": "node",
         "outDir": "dist/",
-        //"outDir": "Z:\\0.0.3\\dist",
         "noImplicitAny": false,
-        "watch":true
-        
+        "watch":false        
     }
 }

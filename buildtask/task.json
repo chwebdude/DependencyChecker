@@ -1,4 +1,5 @@
 {
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",    
     "id": "7ab49694-b37b-4b64-b96e-b66d76deec22",
     "name": "dependency-checker",
     "friendlyName": "NuGet Dependency Check",
@@ -37,7 +38,7 @@
     "inputs": [
         {
             "name": "path",
-            "type": "string",
+            "type": "filePath",
             "label": "Search Path",
             "defaultValue": "$(Build.SourcesDirectory)",
             "required": true,
@@ -55,17 +56,21 @@
             "groupName": "search"
         },
         {
-            "name": "projectFormat",
-            "type": "pickList",
-            "label": "Project Format",
-            "defaultValue": "Both",
+            "name": "includePrerelease",
+            "type": "boolean",
+            "label": "Include Prerelease",
+            "defaultValue": false,
             "required": true,
-            "options": {
-                "Both": "Both", 
-                "New": "New (Dependencies in *.csproj)",
-                "Old":"Old (Dependencies in packages.config)"            
-            },
-            "helpMarkDown": "Switch if only old, new or both dependencies formats should be used.",
+            "helpMarkDown": "Search for prerelease packages.",
+            "groupName": "search"
+        },
+        {
+            "name": "customNuGetfile",
+            "type": "filePath",
+            "label": "Custom NuGet File",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Define a custom NuGet.Config file which includes additional sources.",
             "groupName": "search"
         },
         {
@@ -74,20 +79,37 @@
             "label": "Create Badge",
             "defaultValue": false,
             "required": true,
-            "helpMarkDown": "Create a badge using shields.io. Requires a internet connection!",
+            "helpMarkDown": "Create a badge using shields.io.",
             "groupName": "badge"
-        },
-        {
-            "name": "badgePath",
-            "type": "string",
-            "label": "Badge Path",
-            "defaultValue": "$(Build.ArtifactStagingDirectory)\\dependenciesStatus.svg",
+        },{
+            "name": "createBadgePerProject",
+            "type": "boolean",
+            "label": "Create Badge per Project",
+            "defaultValue": false,
+            "required": true,
+            "helpMarkDown": "Create a badge per project.",
+            "groupName": "badge",
+            "visibleRule": "createBadge = true"
+        },{
+            "name": "badgeDirPath",
+            "type": "filePath",
+            "label": "Badges Directory Path",
+            "defaultValue": "$(Build.ArtifactStagingDirectory)\\Badges",
             "required": true,
             "helpMarkDown": "Where to save the badge and its name.",
             "groupName": "badge",
-            "visibleRule": "createBadge = true"
+            "visibleRule": "createBadge = true && createBadgePerProject = true"
         },
-
+        {
+            "name": "badgePath",
+            "type": "filePath",
+            "label": "Badge Path",
+            "defaultValue": "$(Build.ArtifactStagingDirectory)\\dependenciesStatus.svg",
+            "required": true,
+            "helpMarkDown": "Where to save the badge and its name. (.svg ending!)",
+            "groupName": "badge",
+            "visibleRule": "createBadge = true && createBadgePerProject = false"
+        },
         {
             "name": "style",
             "type": "pickList",
@@ -96,10 +118,9 @@
             "options": {
                 "plastic": "Plastic", 
                 "flat": "Flat",
-                "flat-square":"Flat Square",
-                "social": "Social"
+                "flat-square":"Flat Square"
             },
-            "helpMarkDown": "The style of the badge. See https://shields.io/#styles",
+            "helpMarkDown": "The style of the badge.",
             "groupName": "badge",
             "visibleRule": "createBadge = true"
         },
@@ -114,7 +135,7 @@
         },
         {
             "name": "reportPath",
-            "type": "string",
+            "type": "filePath",
             "label": "Report Path",
             "defaultValue": "$(Build.ArtifactStagingDirectory)\\dependencies.html",
             "required": true,

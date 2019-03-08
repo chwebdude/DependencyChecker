@@ -1,0 +1,57 @@
+﻿<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Project">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PropertyGroup" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="SccProjectName" minOccurs="0"/>
+              <xs:element type="xs:string" name="SccProvider" minOccurs="0"/>
+              <xs:element type="xs:string" name="SccAuxPath" minOccurs="0"/>
+              <xs:element type="xs:string" name="SccLocalPath" minOccurs="0"/>
+              <xs:element type="xs:string" name="TargetFramework" minOccurs="0"/>
+              <xs:element type="xs:string" name="DocumentationFile" minOccurs="0"/>
+              <xs:element type="xs:string" name="GenerateRuntimeConfigurationFiles" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="Label" use="optional"/>
+            <xs:attribute type="xs:string" name="Condition" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ItemGroup" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PackageReference" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="Include" use="optional"/>
+                      <xs:attribute type="xs:string" name="Version" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ProjectReference" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="Include"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Content" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="CopyToOutputDirectory"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="Update" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="Sdk"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

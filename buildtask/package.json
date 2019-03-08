@@ -6,14 +6,10 @@
   "author": "chwebdude",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^11.10.4",
+    "azure-pipelines-task-lib": "^2.7.7",
     "path": "^0.12.7",
-    "request": "^2.81.0",
-    "require": "^2.4.20",
-    "vsts-task-lib": "^2.0.6"
+    "q": "^1.5.1"
   },
-  "devDependencies": {
-    "@types/node": "^7.0.39",
-    "@types/q": "^1.0.3",
-    "@types/request": "^2.0.0"
-  }
+  "devDependencies": {}
 }
