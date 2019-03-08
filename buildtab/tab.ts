@@ -19,6 +19,12 @@ export class InfoTab extends Controls.BaseControl {
 			$("#target").height($(window).height());
 		});
 
+		// Initalize Mustache
+		var template = $("#template").html();
+		var packageId = $("#packageId").html();
+		Mustache.parse(template);
+		Mustache.parse(packageId);
+
 		// Get configuration that's shared between extension and the extension host
 		var sharedConfig: TFS_Build_Extension_Contracts.IBuildResultsViewExtensionConfig = VSS.getConfiguration();
 		var vsoContext = VSS.getWebContext();
@@ -52,13 +58,14 @@ export class InfoTab extends Controls.BaseControl {
 
 							//Deserialize data
 							var ob = JSON.parse(summaryPageData);
-							var template = $("#template").html();
-							Mustache.parse(template);
-							var rendered = Mustache.render(template, ob);
+
+							var rendered = Mustache.render(template, ob, {
+								packageId: packageId
+							});
 							$("#target").html(rendered);
 
 							// Hide loader
-							$("#notLoaded").detach();							
+							$("#notLoaded").detach();
 						});
 					}
 				});

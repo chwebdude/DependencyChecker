@@ -26,6 +26,17 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
+    <script id="packageId" type="x-tmpl-mustache">
+            <th scope="row">
+                    {{#ProjectUrl}}
+                    <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
+                    {{/ProjectUrl}}
+                    {{^ProjectUrl}}
+                    {{Id}}
+                    {{/ProjectUrl}}
+                </th>
+    </script>
+
     <script id="template" type="x-tmpl-mustache">
             {{#Projects}}
                 <div class="container">
@@ -42,12 +53,51 @@
                         </thead>
                         <tbody>
                             {{#PackageStatuses}}
-                            <tr class="{{STYLE}}">
-                                <th scope="row"><a href="{{ProjectUrl}}" target="_blank">{{Id}}</a></th>
-                                <td>{{InstalledVersion}}</td>
-                                <td>{{CurrentVersion}}</td>
-                                <td>REMARK</td>
-                            </tr>
+                                
+                                {{! Not Found Section}}
+                                {{#NotFound}}
+                                    <tr class="table-danger">
+                                        {{> packageId}}
+                                        <td>{{InstalledVersion}}</td>
+                                        <td>{{CurrentVersion}}</td>
+                                        <td>Not Found</td>
+                                    </tr>
+                                {{/NotFound}}
+
+                                {{! Outdated Section}}
+                                {{#Outdated}}
+                                    <tr class="table-warning">
+                                        {{> packageId}}
+                                        <td>{{InstalledVersion}}</td>
+                                        <td>{{CurrentVersion}}</td>
+                                        <td>Outdated</td>
+                                    </tr>
+                                {{/Outdated}}
+
+                                {{! No Local Version Section}}
+                                {{#NoLocalVersion}}
+                                    <tr class="table-warning">
+                                        {{> packageId}}
+                                        <td>{{InstalledVersion}}</td>
+                                        <td>{{CurrentVersion}}</td>
+                                        <td>No local version found</td>
+                                    </tr>
+                                {{/NoLocalVersion}}
+
+                                {{! Normal Section}}
+                                {{^NoLocalVersion}}
+                                    {{^Outdated}}
+                                    {{^NotFound}}
+                                            <tr class="table-warning">
+                                                {{> packageId}}
+                                                <td>{{InstalledVersion}}</td>
+                                                <td>{{CurrentVersion}}</td>
+                                                <td>No local version found</td>
+                                            </tr>
+                                        {{/NotFound}}
+                                    {{/Outdated}}
+                                {{/NoLocalVersion}}
+                            
                             {{/PackageStatuses}}
                         </tbody>
                     </table>
