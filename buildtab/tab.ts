@@ -35,13 +35,27 @@ export class InfoTab extends Controls.BaseControl {
 						var timelineId = taskAttachments[0].timelineId;
 
 						taskClient.getAttachmentContent(vsoContext.project.id, "build", build.orchestrationPlan.planId, timelineId, recId, "dependcies_check_result", "dependcies_check_result").then((attachementContent) => {
-							console.log("attachementContent", attachementContent);
+							function arrayBufferToString(buffer) {
+								var arr = new Uint8Array(buffer);
+								var str = String.fromCharCode.apply(String, arr);
+								if (/[\u0080-\uffff]/.test(str)) {
+									throw new Error("this string seems to contain (still encoded) multibytes");
+								}
+								return str;
+							}
+
+							var summaryPageData = arrayBufferToString(attachementContent);
+
+							//Deserialize data
+							var ob = JSON.parse(summaryPageData);
+
+							console.log("ob", ob);
 							var template = $("#template").html();
 							Mustache.parse(template);
 							var rendered = Mustache.render(template, { name: "TestName" });
 							$("#target").html(rendered);
 						});
-					}					
+					}
 				});
 
 			});
