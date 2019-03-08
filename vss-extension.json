@@ -15,7 +15,6 @@
         "Continuous Integration",
         "Continuous Delivery",
         "Build",
-        "Release",
         "Quality"
     ],
     "targets": [
@@ -97,6 +96,9 @@
     },
     "screenshots":[
         {
+            "path": "images/reportTab.png"
+        },
+        {
             "path": "images/report.jpg"
         },
         {
@@ -104,7 +106,7 @@
         },
         {
             "path": "images/overview.jpg"
-        }
+        }        
     ],
 
     "links": {
