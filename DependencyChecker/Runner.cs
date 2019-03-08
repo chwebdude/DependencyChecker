@@ -1,21 +1,20 @@
-﻿using System;
-using DependencyChecker.Model;
+﻿using DependencyChecker.Model;
 using DotBadge;
+using Newtonsoft.Json;
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace DependencyChecker
 {
@@ -65,11 +64,11 @@ namespace DependencyChecker
 
         private void CreateDevOpsResultFile()
         {
-            var serialized = JsonConvert.SerializeObject(CodeProjects);
-            var fi =new FileInfo("dependcies_check_result.json");
+            var serialized = JsonConvert.SerializeObject(new { Projects = CodeProjects });
+            var fi = new FileInfo("dependcies_check_result.json");
             Directory.CreateDirectory(fi.DirectoryName);
             File.WriteAllText(fi.FullName, serialized);
-            Console.WriteLine("##vso[task.addattachment type=dependcies_check_result;name=dependcies_check_result;]"+fi.FullName);
+            Console.WriteLine("##vso[task.addattachment type=dependcies_check_result;name=dependcies_check_result;]" + fi.FullName);
         }
 
         /// <summary>
@@ -307,17 +306,18 @@ namespace DependencyChecker
             var settings = Settings.LoadDefaultSettings(null);
             if (!string.IsNullOrEmpty(_options.CustomNuGetFile))
             {
-                if(File.Exists(_options.CustomNuGetFile))
-                {                    
+                if (File.Exists(_options.CustomNuGetFile))
+                {
                     var additionalSettings = Settings.LoadSpecificSettings(null, _options.CustomNuGetFile);
                     var section = additionalSettings.GetSection("packageSources");
                     foreach (var item in section.Items)
                     {
                         settings.AddOrUpdate("packageSources", item);
                     }
-                }else
+                }
+                else
                 {
-                 _logger.LogWarning($"Additional NuGet Config \"{_options.CustomNuGetFile}\" not found");   
+                    _logger.LogWarning($"Additional NuGet Config \"{_options.CustomNuGetFile}\" not found");
                 }
             }
 
