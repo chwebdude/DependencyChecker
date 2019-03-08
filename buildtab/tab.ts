@@ -19,12 +19,6 @@ export class InfoTab extends Controls.BaseControl {
 			$("#target").height($(window).height());
 		});
 
-		// Initalize Mustache
-		var template = $("#template").html();
-		var packageId = $("#packageId").html();
-		Mustache.parse(template);
-		Mustache.parse(packageId);
-
 		// Get configuration that's shared between extension and the extension host
 		var sharedConfig: TFS_Build_Extension_Contracts.IBuildResultsViewExtensionConfig = VSS.getConfiguration();
 		var vsoContext = VSS.getWebContext();
@@ -42,6 +36,10 @@ export class InfoTab extends Controls.BaseControl {
 						var recId = taskAttachments[0].recordId;
 						var timelineId = taskAttachments[0].timelineId;
 
+						// Hide loader
+						$("#notLoaded").detach();
+						$("#loading").show();
+
 						// Load it
 						taskClient.getAttachmentContent(vsoContext.project.id, "build", build.orchestrationPlan.planId, timelineId, recId, "dependcies_check_result", "dependcies_check_result").then((attachementContent) => {
 							// It needs to deserialized -.-
@@ -57,15 +55,14 @@ export class InfoTab extends Controls.BaseControl {
 							var summaryPageData = arrayBufferToString(attachementContent);
 
 							//Deserialize data
-							var ob = JSON.parse(summaryPageData);
+							var obj = JSON.parse(summaryPageData);
 
-							var rendered = Mustache.render(template, ob, {
-								packageId: packageId
+							// Load Template and render it
+							$.get("templates/Content.html", (template) => {
+								var rendered = Mustache.render(template, obj);
+								$("#target").html(rendered);
+								$("#loading").hide();
 							});
-							$("#target").html(rendered);
-
-							// Hide loader
-							$("#notLoaded").detach();
 						});
 					}
 				});

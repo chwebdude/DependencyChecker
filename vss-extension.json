@@ -56,6 +56,11 @@
             "packagePath": "scripts"
         },
         {
+            "path": "DependencyChecker/Templates",
+            "addressable": true,
+            "packagePath": "templates"
+        },
+        {
             "path": "buildtab/node_modules/vss-web-extension-sdk/lib",
             "addressable": true,
             "packagePath": "lib"

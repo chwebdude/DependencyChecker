@@ -24,86 +24,6 @@
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-
-    <script id="packageId" type="x-tmpl-mustache">
-            <th scope="row">
-                    {{#ProjectUrl}}
-                    <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
-                    {{/ProjectUrl}}
-                    {{^ProjectUrl}}
-                    {{Id}}
-                    {{/ProjectUrl}}
-                </th>
-    </script>
-
-    <script id="template" type="x-tmpl-mustache">
-            {{#Projects}}
-                <div class="container">
-                    <h1>{{Name}}</h1>
-                    <h6>{{NuGetFile}}</h6>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Package</th>
-                                <th scope="col">Installed Version</th>
-                                <th scope="col">Current Version</th>
-                                <th scope="col">Remark</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#PackageStatuses}}
-                                
-                                {{! Not Found Section}}
-                                {{#NotFound}}
-                                    <tr class="table-danger">
-                                        {{> packageId}}
-                                        <td>{{InstalledVersion}}</td>
-                                        <td>{{CurrentVersion}}</td>
-                                        <td>Not Found</td>
-                                    </tr>
-                                {{/NotFound}}
-
-                                {{! Outdated Section}}
-                                {{#Outdated}}
-                                    <tr class="table-warning">
-                                        {{> packageId}}
-                                        <td>{{InstalledVersion}}</td>
-                                        <td>{{CurrentVersion}}</td>
-                                        <td>Outdated</td>
-                                    </tr>
-                                {{/Outdated}}
-
-                                {{! No Local Version Section}}
-                                {{#NoLocalVersion}}
-                                    <tr class="table-warning">
-                                        {{> packageId}}
-                                        <td>{{InstalledVersion}}</td>
-                                        <td>{{CurrentVersion}}</td>
-                                        <td>No local version found</td>
-                                    </tr>
-                                {{/NoLocalVersion}}
-
-                                {{! Normal Section}}
-                                {{^NoLocalVersion}}
-                                    {{^Outdated}}
-                                    {{^NotFound}}
-                                            <tr>
-                                                {{> packageId}}
-                                                <td>{{InstalledVersion}}</td>
-                                                <td>{{CurrentVersion}}</td>
-                                                <td></td>
-                                            </tr>
-                                        {{/NotFound}}
-                                    {{/Outdated}}
-                                {{/NoLocalVersion}}
-                            
-                            {{/PackageStatuses}}
-                        </tbody>
-                    </table>
-                </div>
-            {{/Projects}}
-            </script>
 </head>
 
 <body>
@@ -111,6 +31,9 @@
         <div class="alert alert-warning" role="alert" id="notLoaded">
             Data not ready yet. Please wait until the Dependency Check Tasks finished.
         </div>
+        <div class="alert alert-info" role="alert" id="loading" style="display: none">
+                Loading data...
+            </div>
         <div id="target" style="overflow:auto;"></div>
     </div>
 </body>
