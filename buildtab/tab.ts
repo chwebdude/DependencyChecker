@@ -12,6 +12,13 @@ export class InfoTab extends Controls.BaseControl {
 
 	public initialize(): void {
 		super.initialize();
+
+		// Attach to window resize to show scrollbar (workaround)
+		$("#target").height($(window).height()); // Initial trigger
+		$(window).resize(() => {
+			$("#target").height($(window).height());
+		});
+
 		// Get configuration that's shared between extension and the extension host
 		var sharedConfig: TFS_Build_Extension_Contracts.IBuildResultsViewExtensionConfig = VSS.getConfiguration();
 		var vsoContext = VSS.getWebContext();
@@ -51,12 +58,7 @@ export class InfoTab extends Controls.BaseControl {
 							$("#target").html(rendered);
 
 							// Hide loader
-							$("#notLoaded").detach();
-
-							// Attach to window resize to show scrollbar (workaround)
-							$(window).resize(() => {
-								$("#target").height($(window).height());
-							})
+							$("#notLoaded").detach();							
 						});
 					}
 				});
