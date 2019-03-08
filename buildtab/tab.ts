@@ -20,21 +20,18 @@ export class InfoTab extends Controls.BaseControl {
 			// register your extension with host through callback
 			sharedConfig.onBuildChanged((build: TFS_Build_Contracts.Build) => {
 				this._initBuildInfo(build);
-				console.log("build", build);
-				/*
-				* If any task uploaded some data using ##vso[task.addattachment] (https://github.com/Microsoft/vso-agent-tasks/blob/master/docs/authoring/commands.md)
-				* Then you could consume the data using taskclient
-				* sample code -
-				*/
+
 				var taskClient = DT_Client.getClient();
-				console.log("taskClient", taskClient);
 				taskClient.getPlanAttachments(vsoContext.project.id, "build", build.orchestrationPlan.planId, "dependcies_check_result").then((taskAttachments) => {
 
+					// Get attachment
 					if (taskAttachments.length == 1) {
 						var recId = taskAttachments[0].recordId;
 						var timelineId = taskAttachments[0].timelineId;
 
+						// Load it
 						taskClient.getAttachmentContent(vsoContext.project.id, "build", build.orchestrationPlan.planId, timelineId, recId, "dependcies_check_result", "dependcies_check_result").then((attachementContent) => {
+							// It needs to deserialized -.-
 							function arrayBufferToString(buffer) {
 								var arr = new Uint8Array(buffer);
 								var str = String.fromCharCode.apply(String, arr);
@@ -48,13 +45,9 @@ export class InfoTab extends Controls.BaseControl {
 
 							//Deserialize data
 							var ob = JSON.parse(summaryPageData);
-
-							console.log("ob", ob);
 							var template = $("#template").html();
-							console.log("template", template);
 							Mustache.parse(template);
-							var rendered = Mustache.render(template, { Name: "TestName" });
-							console.log("rendered", rendered);
+							var rendered = Mustache.render(template, ob);
 							$("#target").html(rendered);
 						});
 					}
