@@ -22,8 +22,9 @@
             padding: 10px;
         }
     </style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 
     <script id="template" type="x-tmpl-mustache">
             {{#Projects}}
@@ -57,6 +58,9 @@
 
 <body>
     <div class="build-info">
+        <div class="alert alert-warning" role="alert" id="notLoaded">
+            Data not ready yet. Please wait until the Dependency Check Tasks finished.
+        </div>
         <div id="target"></div>
     </div>
 </body>

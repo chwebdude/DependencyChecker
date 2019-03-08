@@ -49,6 +49,8 @@ export class InfoTab extends Controls.BaseControl {
 							Mustache.parse(template);
 							var rendered = Mustache.render(template, ob);
 							$("#target").html(rendered);
+
+							$("#notLoaded").detach();
 						});
 					}
 				});
