@@ -4,7 +4,7 @@
 
 Simple Tool for checking NuGet Dependencies and publish a report as build artifact. The results will be added to a new build tab and can be saved as build artifact. *(no dashboard widget yet, but i will work on it!)*.
 
-**Please feel free to submit future requests as issues!**
+**Feel free to submit future requests as issues!**
 
 ## Configuration
 ![Overview](https://raw.githubusercontent.com/chwebdude/DependencyChecker/master/images/overview.jpg)
