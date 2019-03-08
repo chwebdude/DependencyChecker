@@ -58,7 +58,7 @@ export class InfoTab extends Controls.BaseControl {
 							var obj = JSON.parse(summaryPageData);
 
 							// Load Template and render it
-							$.get("templates/Content.html", (template) => {
+							$.get("../templates/Content.html", (template) => {
 								var rendered = Mustache.render(template, obj);
 								$("#target").html(rendered);
 								$("#loading").hide();
