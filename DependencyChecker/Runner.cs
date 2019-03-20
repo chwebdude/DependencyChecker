@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Csproj;
 
 namespace DependencyChecker
 {
@@ -333,25 +334,64 @@ namespace DependencyChecker
                 var packageFile = Path.Combine(dir, "packages.config");
                 if (File.Exists(packageFile))
                 {
-                    // Get information in old Format
-                    var packages = await GetPackagesFromPackgesConfig(packageFile);
-                    CodeProjects.Add(new CodeProject
+                    try
                     {
-                        Name = file.Name.Replace(file.Extension, string.Empty),
-                        NuGetFile = packageFile,
-                        PackageStatuses = packages
-                    });
+                        // Get information in old Format
+                        var packages = await GetPackagesFromPackgesConfig(packageFile);
+                        CodeProjects.Add(new CodeProject
+                        {
+                            Name = file.Name.Replace(file.Extension, string.Empty),
+                            NuGetFile = packageFile,
+                            PackageStatuses = packages
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError("Could not parse file " + packageFile + ". " + e.Message);
+                    }
                 }
                 else
                 {
-                    // Try to get package information from csproj file
-                    var packages = await GetPackagesFromCsproj(file.FullName);
-                    CodeProjects.Add(new CodeProject
+                    try
                     {
-                        Name = file.Name.Replace(file.Extension, string.Empty),
-                        NuGetFile = file.Name,
-                        PackageStatuses = packages
-                    });
+                        // Try to get package information from csproj file
+                        var packages = await GetPackagesFromCsproj(file.FullName);
+                        CodeProjects.Add(new CodeProject
+                        {
+                            Name = file.Name.Replace(file.Extension, string.Empty),
+                            NuGetFile = file.FullName,
+                            PackageStatuses = packages
+                        });
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        var failed = false;
+                        try
+                        {
+                            // Probably this is in the wrong format. Try to parse with old csproj format
+                            // Parse file content
+                            var serializer = new XmlSerializer(typeof(CsprojOld.Project));
+                            var data = (CsprojOld.Project)serializer.Deserialize(new XmlTextReader(csprojFile));
+                            _logger.LogInformation("This project type should have referenced NuGet packages with a packages.config. This file wasn't found and therefore no information could be collected.");
+                        }
+                        catch (Exception exception)
+                        {
+                            _logger.LogError("Could not parse file " + file.FullName + ". " + exception.Message);
+                            failed = true;
+
+                        }
+                        CodeProjects.Add(new CodeProject
+                        {
+                            Name = file.Name.Replace(file.Extension, string.Empty),
+                            NuGetFile = file.FullName,
+                            ParsingError = failed
+                        });
+                    }
+
+                    catch (Exception e)
+                    {
+                        _logger.LogError("Could not parse file " + file.FullName + ". " + e.Message);
+                    }
                 }
             }
         }
