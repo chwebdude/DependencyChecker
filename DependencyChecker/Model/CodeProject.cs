@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DependencyChecker.Model
 {
@@ -11,6 +12,8 @@ namespace DependencyChecker.Model
         public string NuGetFile { get; set; }
 
         public List<PackageStatus> PackageStatuses { get; set; } = new List<PackageStatus>();
+        public bool ParsingError { get; set; }
+        public bool HasPackages => PackageStatuses.Any();
 
         #endregion
     }

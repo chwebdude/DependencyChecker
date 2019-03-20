@@ -2,94 +2,112 @@
 <div class="container">
     <h1>{{Name}}</h1>
     <h6>{{NuGetFile}}</h6>
+
+    {{#ParsingError}}
+    <div class="alert alert-danger">
+        <strong>Failed!</strong> Could not parse package information out of project files.
+    </div>
+    {{/ParsingError}}
+
+    {{^ParsingError}}
+    {{^HasPackages}}
+    <div class="alert alert-info">
+        <strong>No packages!</strong> This project seems to not have any packages.
+    </div>
+    {{/HasPackages}}
+    {{#HasPackages}}
     <table class="table table-striped table-hover">
         <thead>
-            <tr>
-                <th scope="col">Package</th>
-                <th scope="col">Installed Version</th>
-                <th scope="col">Current Version</th>
-                <th scope="col">Remark</th>
-            </tr>
+        <tr>
+            <th scope="col">Package</th>
+            <th scope="col">Installed Version</th>
+            <th scope="col">Current Version</th>
+            <th scope="col">Remark</th>
+        </tr>
         </thead>
         <tbody>
-            {{#PackageStatuses}}
+        {{#PackageStatuses}}
 
-            {{! Not Found Section}}
-            {{#NotFound}}
-            <tr class="table-danger">
-                <th scope="row">
-                    {{#ProjectUrl}}
-                    <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
-                    {{/ProjectUrl}}
-                    {{^ProjectUrl}}
-                    {{Id}}
-                    {{/ProjectUrl}}
-                </th>
-                <td>{{InstalledVersion}}</td>
-                <td>{{CurrentVersion}}</td>
-                <td>Not Found</td>
-            </tr>
-            {{/NotFound}}
+        {{! Not Found Section}}
+        {{#NotFound}}
+        <tr class="table-danger">
+            <th scope="row">
+                {{#ProjectUrl}}
+                <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
+                {{/ProjectUrl}}
+                {{^ProjectUrl}}
+                {{Id}}
+                {{/ProjectUrl}}
+            </th>
+            <td>{{InstalledVersion}}</td>
+            <td>{{CurrentVersion}}</td>
+            <td>Not Found</td>
+        </tr>
+        {{/NotFound}}
 
-            {{! Outdated Section}}
-            {{#Outdated}}
-            <tr class="table-warning">
-                <th scope="row">
-                    {{#ProjectUrl}}
-                    <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
-                    {{/ProjectUrl}}
-                    {{^ProjectUrl}}
-                    {{Id}}
-                    {{/ProjectUrl}}
-                </th>
-                <td>{{InstalledVersion}}</td>
-                <td>{{CurrentVersion}}</td>
-                <td>Outdated</td>
-            </tr>
-            {{/Outdated}}
+        {{! Outdated Section}}
+        {{#Outdated}}
+        <tr class="table-warning">
+            <th scope="row">
+                {{#ProjectUrl}}
+                <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
+                {{/ProjectUrl}}
+                {{^ProjectUrl}}
+                {{Id}}
+                {{/ProjectUrl}}
+            </th>
+            <td>{{InstalledVersion}}</td>
+            <td>{{CurrentVersion}}</td>
+            <td>Outdated</td>
+        </tr>
+        {{/Outdated}}
 
-            {{! No Local Version Section}}
-            {{#NoLocalVersion}}
-            {{^NotFound}}
-            <tr class="table-warning">
-                <th scope="row">
-                    {{#ProjectUrl}}
-                    <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
-                    {{/ProjectUrl}}
-                    {{^ProjectUrl}}
-                    {{Id}}
-                    {{/ProjectUrl}}
-                </th>
-                <td>{{InstalledVersion}}</td>
-                <td>{{CurrentVersion}}</td>
-                <td>No local version found</td>
-            </tr>
-            {{/NotFound}}
-            {{/NoLocalVersion}}
+        {{! No Local Version Section}}
+        {{#NoLocalVersion}}
+        {{^NotFound}}
+        <tr class="table-warning">
+            <th scope="row">
+                {{#ProjectUrl}}
+                <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
+                {{/ProjectUrl}}
+                {{^ProjectUrl}}
+                {{Id}}
+                {{/ProjectUrl}}
+            </th>
+            <td>{{InstalledVersion}}</td>
+            <td>{{CurrentVersion}}</td>
+            <td>No local version found</td>
+        </tr>
+        {{/NotFound}}
+        {{/NoLocalVersion}}
 
-            {{! Normal Section}}
-            {{^NoLocalVersion}}
-            {{^Outdated}}
-            {{^NotFound}}
-            <tr>
-                <th scope="row">
-                    {{#ProjectUrl}}
-                    <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
-                    {{/ProjectUrl}}
-                    {{^ProjectUrl}}
-                    {{Id}}
-                    {{/ProjectUrl}}
-                </th>
-                <td>{{InstalledVersion}}</td>
-                <td>{{CurrentVersion}}</td>
-                <td></td>
-            </tr>
-            {{/NotFound}}
-            {{/Outdated}}
-            {{/NoLocalVersion}}
+        {{! Normal Section}}
+        {{^NoLocalVersion}}
+        {{^Outdated}}
+        {{^NotFound}}
+        <tr>
+            <th scope="row">
+                {{#ProjectUrl}}
+                <a href="{{ProjectUrl}}" target="_blank">{{Id}}</a>
+                {{/ProjectUrl}}
+                {{^ProjectUrl}}
+                {{Id}}
+                {{/ProjectUrl}}
+            </th>
+            <td>{{InstalledVersion}}</td>
+            <td>{{CurrentVersion}}</td>
+            <td></td>
+        </tr>
+        {{/NotFound}}
+        {{/Outdated}}
+        {{/NoLocalVersion}}
 
-            {{/PackageStatuses}}
+        {{/PackageStatuses}}
         </tbody>
     </table>
+    {{/HasPackages}}
+    {{/ParsingError}}
 </div>
+<br />
+<br />
 {{/Projects}}

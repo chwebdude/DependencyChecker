@@ -365,10 +365,11 @@ namespace DependencyChecker
                     }
                     catch (InvalidOperationException e)
                     {
-                        // Probably this is in the wrong format. Try to parse with old csproj format
-                        // Parse file content
+                        var failed = false;
                         try
                         {
+                            // Probably this is in the wrong format. Try to parse with old csproj format
+                            // Parse file content
                             var serializer = new XmlSerializer(typeof(CsprojOld.Project));
                             var data = (CsprojOld.Project)serializer.Deserialize(new XmlTextReader(csprojFile));
                             _logger.LogInformation("This project type should have referenced NuGet packages with a packages.config. This file wasn't found and therefore no information could be collected.");
@@ -376,12 +377,14 @@ namespace DependencyChecker
                         catch (Exception exception)
                         {
                             _logger.LogError("Could not parse file " + file.FullName + ". " + exception.Message);
+                            failed = true;
 
                         }
                         CodeProjects.Add(new CodeProject
                         {
                             Name = file.Name.Replace(file.Extension, string.Empty),
-                            NuGetFile = file.Name
+                            NuGetFile = file.Name,
+                            ParsingError = failed
                         });
                     }
 
