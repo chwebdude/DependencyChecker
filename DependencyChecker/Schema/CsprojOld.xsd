@@ -1,0 +1,100 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/developer/msbuild/2003" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Project">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="Import">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Project"/>
+                <xs:attribute type="xs:string" name="Condition"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PropertyGroup" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Configuration" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="Condition"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Platform" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="Condition"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="ProjectGuid" minOccurs="0"/>
+              <xs:element type="xs:string" name="OutputType" minOccurs="0"/>
+              <xs:element type="xs:string" name="RootNamespace" minOccurs="0"/>
+              <xs:element type="xs:string" name="AssemblyName" minOccurs="0"/>
+              <xs:element type="xs:string" name="TargetFrameworkVersion" minOccurs="0"/>
+              <xs:element type="xs:short" name="FileAlignment" minOccurs="0"/>
+              <xs:element type="xs:string" name="AutoGenerateBindingRedirects" minOccurs="0"/>
+              <xs:element type="xs:string" name="Deterministic" minOccurs="0"/>
+              <xs:element type="xs:string" name="PlatformTarget" minOccurs="0"/>
+              <xs:element type="xs:string" name="DebugSymbols" minOccurs="0"/>
+              <xs:element type="xs:string" name="DebugType" minOccurs="0"/>
+              <xs:element type="xs:string" name="Optimize" minOccurs="0"/>
+              <xs:element type="xs:string" name="OutputPath" minOccurs="0"/>
+              <xs:element type="xs:string" name="DefineConstants" minOccurs="0"/>
+              <xs:element type="xs:string" name="ErrorReport" minOccurs="0"/>
+              <xs:element type="xs:byte" name="WarningLevel" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="Condition" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ItemGroup" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element name="Reference" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="HintPath" minOccurs="0"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="Include" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Compile" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="Include" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="None" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="SubType" minOccurs="0"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="Include" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Content" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="CopyToOutputDirectory"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="Include" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="Project" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:attribute type="xs:float" name="ToolsVersion"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

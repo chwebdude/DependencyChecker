@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Csproj;
 
 namespace DependencyChecker
 {
@@ -362,6 +363,15 @@ namespace DependencyChecker
                             PackageStatuses = packages
                         });
                     }
+                    catch (InvalidOperationException e)
+                    {
+                        // Probably this is in the wrong format. Try to parse with old csproj format
+                        // Parse file content
+                        var serializer = new XmlSerializer(typeof(CsprojOld.Project));
+                        var data = (CsprojOld.Project)serializer.Deserialize(new XmlTextReader(csprojFile));
+                        _logger.LogInformation("This project type should have referenced NuGet packages with a packages.config. This file wasn't found and therefore no information could be collected.");
+                    }
+
                     catch (Exception e)
                     {
                         _logger.LogError("Could not parse file " + file.FullName + ". " + e.Message);
