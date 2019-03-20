@@ -359,7 +359,7 @@ namespace DependencyChecker
                         CodeProjects.Add(new CodeProject
                         {
                             Name = file.Name.Replace(file.Extension, string.Empty),
-                            NuGetFile = file.Name,
+                            NuGetFile = file.FullName,
                             PackageStatuses = packages
                         });
                     }
@@ -383,7 +383,7 @@ namespace DependencyChecker
                         CodeProjects.Add(new CodeProject
                         {
                             Name = file.Name.Replace(file.Extension, string.Empty),
-                            NuGetFile = file.Name,
+                            NuGetFile = file.FullName,
                             ParsingError = failed
                         });
                     }
