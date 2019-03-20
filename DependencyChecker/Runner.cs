@@ -333,25 +333,39 @@ namespace DependencyChecker
                 var packageFile = Path.Combine(dir, "packages.config");
                 if (File.Exists(packageFile))
                 {
-                    // Get information in old Format
-                    var packages = await GetPackagesFromPackgesConfig(packageFile);
-                    CodeProjects.Add(new CodeProject
+                    try
                     {
-                        Name = file.Name.Replace(file.Extension, string.Empty),
-                        NuGetFile = packageFile,
-                        PackageStatuses = packages
-                    });
+                        // Get information in old Format
+                        var packages = await GetPackagesFromPackgesConfig(packageFile);
+                        CodeProjects.Add(new CodeProject
+                        {
+                            Name = file.Name.Replace(file.Extension, string.Empty),
+                            NuGetFile = packageFile,
+                            PackageStatuses = packages
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError("Could not parse file " + packageFile + ". " + e.Message);
+                    }
                 }
                 else
                 {
-                    // Try to get package information from csproj file
-                    var packages = await GetPackagesFromCsproj(file.FullName);
-                    CodeProjects.Add(new CodeProject
+                    try
                     {
-                        Name = file.Name.Replace(file.Extension, string.Empty),
-                        NuGetFile = file.Name,
-                        PackageStatuses = packages
-                    });
+                        // Try to get package information from csproj file
+                        var packages = await GetPackagesFromCsproj(file.FullName);
+                        CodeProjects.Add(new CodeProject
+                        {
+                            Name = file.Name.Replace(file.Extension, string.Empty),
+                            NuGetFile = file.Name,
+                            PackageStatuses = packages
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError("Could not parse file " + file.FullName + ". " + e.Message);
+                    }
                 }
             }
         }
