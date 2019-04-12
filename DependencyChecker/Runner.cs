@@ -175,6 +175,10 @@ namespace DependencyChecker
             foreach (var itemGroup in data.ItemGroup)
             {
                 // Crawl trough all PackageReferences
+                if (itemGroup.PackageReference == null)
+                {
+                    continue;
+                }
                 foreach (var package in itemGroup.PackageReference)
                 {
                     _logger.LogInformation($"Checking package {package.Include}");
