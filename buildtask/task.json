@@ -152,8 +152,8 @@
                 "continue": "Continue without warning or fail at all",
                 "warningmajor": "Warning on major version", 
                 "failmajor": "Fail on major upgrade",
-                "warningmajor": "Warning on minor version", 
-                "failmajor": "Fail on minor version"
+                "warningminor": "Warning on minor version", 
+                "failminor": "Fail on minor version"
             },
             "helpMarkDown": "Action to take on the result",
             "groupName": "advanced"
