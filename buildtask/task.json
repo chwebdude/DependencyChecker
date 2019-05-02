@@ -142,7 +142,22 @@
             "helpMarkDown": "Location and name where to save report.",
             "groupName": "report",
             "visibleRule": "createReport = true"
-        }
+        },
+        {
+            "name": "resultType",
+            "type": "pickList",
+            "label": "Result Type",
+            "defaultValue": "continue",
+            "options": {
+                "continue": "Continue without warning or fail at all",
+                "warningmajor": "Warning on major version", 
+                "failmajor": "Fail on major upgrade",
+                "warningmajor": "Warning on minor version", 
+                "failmajor": "Fail on minor version"
+            },
+            "helpMarkDown": "Action to take on the result",
+            "groupName": "advanced"
+        }	        
     ],
     "execution": {
         "Node": {
