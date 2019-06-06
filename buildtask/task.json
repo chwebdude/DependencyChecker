@@ -151,7 +151,7 @@
             "options": {
                 "continue": "Continue without warning or fail at all",
                 "warningmajor": "Warning on major version", 
-                "failmajor": "Fail on major upgrade",
+                "failmajor": "Fail on major version",
                 "warningminor": "Warning on minor version", 
                 "failminor": "Fail on minor version"
             },
