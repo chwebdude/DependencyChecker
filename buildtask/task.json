@@ -4,7 +4,7 @@
     "name": "dependency-checker",
     "friendlyName": "NuGet Dependency Check",
     "description": "Tool for checking NuGet dependencies.",
-    "helpMarkDown": "",
+    "helpUrl": "https://marketplace.visualstudio.com/items?itemName=chwebdude.dependency-checker",
     "category": "Utility",
     "author": "chwebdude",
     "version": {
