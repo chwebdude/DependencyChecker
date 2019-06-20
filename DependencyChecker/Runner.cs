@@ -28,7 +28,10 @@ namespace DependencyChecker
 
         private readonly List<PackageMetadataResource> _packageMetadataResources = new List<PackageMetadataResource>();
 
+        private readonly Dictionary<string, IPackageSearchMetadata> currentPackageCache = new Dictionary<string, IPackageSearchMetadata>();
+
         public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
+
         private Options _options;
 
         #endregion
@@ -141,7 +144,7 @@ namespace DependencyChecker
         /// </summary>
         private void CreateOutputDocument()
         {
-            var currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? ".";
             var contentTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Content.html"));
             var reportTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Report.html"));
 
@@ -181,10 +184,23 @@ namespace DependencyChecker
                 }
                 foreach (var package in itemGroup.PackageReference)
                 {
-                    _logger.LogInformation($"Checking package {package.Include}");
-                    var res = await GetPackageStatus(package.Include, package.Version);
-                    packageStatuses.Add(res);
-                    _logger.LogInformation(string.Empty); // Blank line
+                    if (_options.CombineProjects)
+                    {
+                        _logger.LogDebug($"Add package to list: {package.Include} which is defined in {csprojFile}");
+                        packageStatuses.Add(new PackageStatus()
+                        {
+                            Id = package.Include,
+                            InstalledVersion = package.Version,
+                            DefinedInFile = csprojFile
+                        });
+                    }
+                    else
+                    {
+                        _logger.LogInformation($"Checking package {package.Include}");
+                        var res = await GetPackageStatus(package.Include, package.Version);
+                        packageStatuses.Add(res);
+                        _logger.LogInformation(string.Empty); // Blank line
+                    }
                 }
             }
 
@@ -207,10 +223,23 @@ namespace DependencyChecker
             var packageStatuses = new List<PackageStatus>();
             foreach (var package in data.package)
             {
-                _logger.LogInformation($"Checking package {package.id}");
-                var res = await GetPackageStatus(package.id, package.version);
-                packageStatuses.Add(res);
-                _logger.LogInformation(string.Empty); // Blank line
+                if (_options.CombineProjects)
+                {
+                    _logger.LogDebug($"Add package to list: {package.id} which is defined in {packageFile}");
+                    packageStatuses.Add(new PackageStatus()
+                    {
+                        Id = package.id,
+                        InstalledVersion = package.version,
+                        DefinedInFile = packageFile
+                    });
+                }
+                else
+                {
+                    _logger.LogInformation($"Checking package {package.id}");
+                    var res = await GetPackageStatus(package.id, package.version);
+                    packageStatuses.Add(res);
+                    _logger.LogInformation(string.Empty); // Blank line
+                }
             }
 
             return packageStatuses;
@@ -225,15 +254,23 @@ namespace DependencyChecker
         private async Task<PackageStatus> GetPackageStatus(string packageId, string installedVersion)
         {
             IPackageSearchMetadata searchResult = null;
-            foreach (var packageMetadataResource in _packageMetadataResources)
+            if (currentPackageCache.ContainsKey(packageId))
             {
-                // Todo: Include Prerelease option
-                var results = await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None);
-                if (results.Count() != 0)
+                searchResult = currentPackageCache[packageId];
+            }
+            else
+            {
+                foreach (var packageMetadataResource in _packageMetadataResources)
                 {
-                    searchResult = results.Last();
-                    break;
+                    // Todo: Include Prerelease option
+                    var results = await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None);
+                    if (results.Count() != 0)
+                    {
+                        searchResult = results.Last();
+                        break;
+                    }
                 }
+                currentPackageCache.Add(packageId, searchResult);
             }
 
             // Parse Version information
@@ -367,7 +404,7 @@ namespace DependencyChecker
                             PackageStatuses = packages
                         });
                     }
-                    catch (InvalidOperationException e)
+                    catch (InvalidOperationException)
                     {
                         var failed = false;
                         try
@@ -398,6 +435,65 @@ namespace DependencyChecker
                     }
                 }
             }
+
+            if (_options.CombineProjects)
+            {
+                await RunCombinedPackages();
+            }
+        }
+
+        private async Task RunCombinedPackages()
+        {
+            var packages = CodeProjects.SelectMany(cp => cp.PackageStatuses);
+            var grouped = packages.GroupBy(p => p.Id);
+            _logger.LogInformation($"Found {grouped.Count()} different package Id's\n");
+
+
+            // Update CodeProject list
+            var cps = new List<CodeProject>();
+            cps.Add(new CodeProject()
+            {
+                Name = "Dependency Report"
+            });
+
+
+            // Iterate trough packages grouped by Id
+            foreach (var packageGroup in grouped)
+            {
+                var distincted = packageGroup
+                    .Select(g => g)
+                    .Distinct(new IdAndInstalledVersionComparer());
+
+                _logger.LogInformation($"Checking package {distincted.First().Id}");
+
+                if (distincted.Count() == 1)
+                {
+                    // Check status for normal package
+                    var p = distincted.First();
+                    var package = await GetPackageStatus(p.Id, p.InstalledVersion);
+                    cps[0].PackageStatuses.Add(package);
+                }
+                else
+                {
+                    // Check status for double packages
+                    var cp = new CodeProject()
+                    {
+                        Name = distincted.First().Id
+                    };
+
+                    foreach (var p in distincted)
+                    {
+                        var package = await GetPackageStatus(p.Id, p.InstalledVersion);
+                        package.Id = p.DefinedInFile;
+                        cp.PackageStatuses.Add(package);
+                    }
+                    cps.Add(cp);
+                }
+                _logger.LogInformation(string.Empty);
+            }
+
+            CodeProjects.Clear();
+            CodeProjects.AddRange(cps);
         }
     }
 }
