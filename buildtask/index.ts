@@ -10,6 +10,7 @@ async function run() {
 
         var path = tl.getPathInput("path");
         var searchRecursive = tl.getBoolInput("searchRecursive");
+        var combineProjects = tl.getBoolInput("combineProjects");
         var includePrerelease = tl.getBoolInput("includePrerelease", true);
         var createReport = tl.getBoolInput("createReport", true);
         var reportPath = tl.getPathInput("reportPath");
@@ -41,6 +42,8 @@ async function run() {
         }
         if (searchRecursive)
             arg.push("--search-recursive");
+        if (combineProjects)
+            arg.push("--combine-projects")
         if (includePrerelease)
             arg.push("--prerelease")
         if(nuGetFile != "")        

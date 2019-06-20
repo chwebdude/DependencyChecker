@@ -31,6 +31,9 @@ namespace DependencyChecker.Model
         [Option("search-recursive", Required = false, HelpText = "Defines if the search is recursive.")]
         public bool SearchRec { get; set; }
 
+        [Option("combine-projects", Required = false, HelpText = "Combine projects and distinct all packages. If a package is installed in different version it will be highlighted.")]
+        public bool CombineProjects { get; set; }
+
         [Option("prerelease", Required = false, HelpText = "Defines if prereleases should be considered or not")]
         public bool IncludePrereleases { get; set; }
 

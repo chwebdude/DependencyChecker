@@ -28,6 +28,9 @@ Path to check for the packages.config files.
 ### Search Recursive
 Search subdirectories for the packages files.
 
+### Combine Projects
+This option will combine all found projects and lists all packages in a distincted form. If a package is installed several times, it will be listed seperatly. This option is similar to Visual Studios "Consolidation" function
+
 ### Include Prerelease
 Include prerelease packages for search?
 

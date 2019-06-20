@@ -4,7 +4,7 @@
     "name": "dependency-checker",
     "friendlyName": "NuGet Dependency Check",
     "description": "Tool for checking NuGet dependencies.",
-    "helpMarkDown": "",
+    "helpUrl": "https://marketplace.visualstudio.com/items?itemName=chwebdude.dependency-checker",
     "category": "Utility",
     "author": "chwebdude",
     "version": {
@@ -44,8 +44,7 @@
             "required": true,
             "helpMarkDown": "Path to check for the packages.config files.",
             "groupName": "search"
-        },
-        
+        },        
         {
             "name": "searchRecursive",
             "type": "boolean",
@@ -53,6 +52,15 @@
             "defaultValue": true,
             "required": true,
             "helpMarkDown": "Search subdirectories for the packages files.",
+            "groupName": "search"
+        },
+        {
+            "name": "combineProjects",
+            "type": "boolean",
+            "label": "Combine projects",
+            "defaultValue": false,
+            "required": true,
+            "helpMarkDown": "Combine projects and distinct all packages. If a package is installed in different version it will be highlighted.",
             "groupName": "search"
         },
         {

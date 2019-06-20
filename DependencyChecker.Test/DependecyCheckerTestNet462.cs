@@ -77,7 +77,7 @@ namespace DependencyChecker.Test
             Assert.IsFalse(package.NotFound);
             Assert.IsTrue(package.Outdated);
             Assert.IsTrue(package.NoLocalVersion);
-            Assert.AreEqual(new Uri("http://nunit.org/"), package.ProjectUrl);
+            Assert.AreEqual(new Uri("https://nunit.org/"), package.ProjectUrl);
         }
     }
 }
