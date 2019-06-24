@@ -354,8 +354,8 @@ namespace DependencyChecker
                 _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
 
                 var ps = new PackageSource(_options.AzureArtifactsFeedUri);
-                ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "", "3keiwos4fb45iklanedoyajhxwoczisojgwlzcvzgrthlzq5jyrq", true);
-                var sr = new SourceRepository(ps, new List<INuGetResourceProvider>());
+                ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "fabrice.andreis@hotmail.com", "3keiwos4fb45iklanedoyajhxwoczisojgwlzcvzgrthlzq5jyrq", true);
+                var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
                 var metadataResource = sr.GetResource<PackageMetadataResource>();
                 _packageMetadataResources.Add(metadataResource);
                 Sources.Add(sr.PackageSource.Source);
