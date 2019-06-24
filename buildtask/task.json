@@ -84,7 +84,7 @@
         {
             "name": "artifactsFeeds",
             "type": "pickList",
-            "label": "Use packages from this Azure Artifacts",
+            "label": "Use packages from this Azure Artifacts feed",
             "defaultValue": "",
             "helpMarkDown": "Include the selected feed in the generated NuGet.config. You must have Azure Artifacts installed and licensed to select a feed here.",
             "required": "false",

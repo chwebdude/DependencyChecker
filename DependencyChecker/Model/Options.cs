@@ -42,6 +42,10 @@ namespace DependencyChecker.Model
 
         [Option("dev-ops-result-file", Required = false, HelpText = "Create a Azure DevOps result file.")]
         public bool CreateDevOpsResultFile { get; set; }
+
+        [Option("azure-artifacts-uri", Required = false, HelpText = "An additional source like Azure Artifacts")]
+        public string AzureArtifactsFeedUri{ get; set; }
+
         #endregion
     }
 }

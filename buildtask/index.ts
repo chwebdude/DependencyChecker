@@ -20,25 +20,29 @@ async function run() {
         var badgePath = tl.getPathInput("badgePath");
         var style = tl.getInput("style");
         var nuGetFile = tl.getPathInput("customNuGetfile", false);
+        var useArtifacts = tl.getBoolInput("useArtifacts", true);
+        var artifactsFeeds = tl.getInput("artifactsFeeds", false);
+        var collectionUri = process.env.SYSTEM_COLLECTIONURI;
+
 
         let toolPath = __dirname + "\\..\\bin\\DependencyChecker.exe";
 
-        let arg = ["--dev-ops-result-file","--search-path", path, "--report-path", reportPath];
+        let arg = ["--dev-ops-result-file", "--search-path", path, "--report-path", reportPath];
         if (createReport)
             arg.push("--create-report");
-        if (createBadge){
+        if (createBadge) {
             var realStyle = "Flat";
-            switch(style){
+            switch (style) {
                 case "flat": realStyle = "Flat"; break;
                 case "flat-square": realStyle = "FlatSquare"; break;
                 case "plastic": realStyle = "Plastic"; break;
             }
 
-            if(createBadgePerProject){
+            if (createBadgePerProject) {
                 arg.push("--create-badge", "--badge-path", badgeDirPath, "--badge-style", realStyle);
-            }else{
+            } else {
                 arg.push("--create-badge", "--badge-path", badgePath, "--badge-style", realStyle);
-            }            
+            }
         }
         if (searchRecursive)
             arg.push("--search-recursive");
@@ -46,9 +50,14 @@ async function run() {
             arg.push("--combine-projects")
         if (includePrerelease)
             arg.push("--prerelease")
-        if(nuGetFile != "")        
+        if (nuGetFile != "")
             arg.push("--nuget-file", nuGetFile);
-        
+
+        // Azure Artifacts Feed
+        if(useArtifacts){
+            var artifactsUri = collectionUri + "_packaging/" + artifactsFeeds + "/nuget/v3/index.json";
+            arg.push("--azure-artifacts-uri", artifactsUri);
+        }        
 
         let tool: trm.ToolRunner = tl.tool(toolPath).arg(arg);
         let result: number = await tool.exec();

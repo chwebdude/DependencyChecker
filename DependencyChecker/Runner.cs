@@ -337,6 +337,12 @@ namespace DependencyChecker
                 }
             }
 
+            if (!string.IsNullOrEmpty(_options.AzureArtifactsFeedUri))
+            {
+                _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
+                settings.AddOrUpdate("packageSources", new SourceItem("Azure Artifacts", _options.AzureArtifactsFeedUri));
+            }
+
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, Repository.Provider.GetCoreV3());
             var sourceRepository = sourceRepositoryProvider.GetRepositories();
             foreach (var repository in sourceRepository)
