@@ -9,6 +9,7 @@ using NuGet.Versioning;
 using Stubble.Core.Builders;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -33,12 +34,6 @@ namespace DependencyChecker
         public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
 
         private Options _options;
-
-        #endregion
-
-        #region Properties
-
-        public List<string> Sources { get; } = new List<string>();
 
         #endregion
 
@@ -337,12 +332,6 @@ namespace DependencyChecker
                 }
             }
 
-            if (!string.IsNullOrEmpty(_options.AzureArtifactsFeedUri))
-            {
-                _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
-                settings.AddOrUpdate("packageSources", new SourceItem("Azure Artifacts", _options.AzureArtifactsFeedUri));
-            }
-
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, Repository.Provider.GetCoreV3());
             var sourceRepository = sourceRepositoryProvider.GetRepositories();
             foreach (var repository in sourceRepository)
@@ -350,7 +339,19 @@ namespace DependencyChecker
                 var resource = repository.GetResource<PackageMetadataResource>();
                 _packageMetadataResources.Add(resource);
                 _logger.LogInformation("  " + repository + " \t - \t" + repository.PackageSource.Source);
-                Sources.Add(repository.PackageSource.Source);
+
+            }
+
+
+            if (!string.IsNullOrEmpty(_options.AzureArtifactsFeedUri))
+            {
+                _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
+
+                var ps = new PackageSource(_options.AzureArtifactsFeedUri);
+                ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "", "3keiwos4fb45iklanedoyajhxwoczisojgwlzcvzgrthlzq5jyrq", true);
+                var sr = new SourceRepository(ps, new List<INuGetResourceProvider>());
+                var metadataResource = sr.GetResource<PackageMetadataResource>();
+                _packageMetadataResources.Add(metadataResource);
             }
 
             _logger.LogInformation(string.Empty); // Blank line
