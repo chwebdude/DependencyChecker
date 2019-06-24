@@ -37,6 +37,12 @@ namespace DependencyChecker
 
         #endregion
 
+        #region Properties
+
+        public List<string> Sources { get; } = new List<string>();
+
+        #endregion
+
         /// <summary>
         ///     Runs the specified options.
         /// </summary>
@@ -339,7 +345,7 @@ namespace DependencyChecker
                 var resource = repository.GetResource<PackageMetadataResource>();
                 _packageMetadataResources.Add(resource);
                 _logger.LogInformation("  " + repository + " \t - \t" + repository.PackageSource.Source);
-
+                Sources.Add(repository.PackageSource.Source);
             }
 
 
@@ -352,6 +358,7 @@ namespace DependencyChecker
                 var sr = new SourceRepository(ps, new List<INuGetResourceProvider>());
                 var metadataResource = sr.GetResource<PackageMetadataResource>();
                 _packageMetadataResources.Add(metadataResource);
+                Sources.Add(sr.PackageSource.Source);
             }
 
             _logger.LogInformation(string.Empty); // Blank line
