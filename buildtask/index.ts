@@ -56,6 +56,7 @@ async function run() {
         // Azure Artifacts Feed
         if(useArtifacts){
             var artifactsUri = collectionUri + "_packaging/" + artifactsFeeds + "/nuget/v3/index.json";
+            artifactsUri = artifactsUri.replace("dev.azure.com", "pkgs.dev.azure.com");
             arg.push("--azure-artifacts-uri", artifactsUri);
         }        
 
