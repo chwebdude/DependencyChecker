@@ -89,7 +89,7 @@
             "helpMarkDown": "Include the selected feed in the generated NuGet.config. You must have Azure Artifacts installed and licensed to select a feed here.",
             "required": "false",
             "groupName": "search",
-            "visibleRule": "useArtifacts"
+            "visibleRule": "useArtifacts = true"
         },
         {
             "name": "customNuGetfile",
