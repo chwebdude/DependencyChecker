@@ -1,4 +1,5 @@
-﻿using DependencyChecker.Model;
+﻿using Csproj;
+using DependencyChecker.Model;
 using DotBadge;
 using Newtonsoft.Json;
 using NuGet.Common;
@@ -9,7 +10,6 @@ using NuGet.Versioning;
 using Stubble.Core.Builders;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,7 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using Csproj;
 
 namespace DependencyChecker
 {
@@ -353,12 +352,18 @@ namespace DependencyChecker
             {
                 _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
 
-                var ps = new PackageSource(_options.AzureArtifactsFeedUri);
-                ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "fabrice.andreis@hotmail.com", "3keiwos4fb45iklanedoyajhxwoczisojgwlzcvzgrthlzq5jyrq", true);
-                var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
-                var metadataResource = sr.GetResource<PackageMetadataResource>();
-                _packageMetadataResources.Add(metadataResource);
-                Sources.Add(sr.PackageSource.Source);
+                //var ps = new PackageSource(_options.AzureArtifactsFeedUri);
+                ////ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "fabrice.andreis@hotmail.com", "z2ffwsimszzgpf4frfptndgbzvqnnl3mbbg4vbwpwbjdx6kzdtva", true);
+                ////ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "AzureDevOps", "AzureDevOps", true);
+                ////ps.Credentials = new Credential;
+                ////ps.Credentials = 
+                ////var x = Credentialprovider.
+                ////var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
+                //var metadataResource = sr.GetResource<PackageMetadataResource>();
+                //_packageMetadataResources.Add(metadataResource);
+                //Sources.Add(sr.PackageSource.Source);
+
+                //credential
             }
 
             _logger.LogInformation(string.Empty); // Blank line
