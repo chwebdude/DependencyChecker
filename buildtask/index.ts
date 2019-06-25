@@ -1,10 +1,6 @@
 import tl = require('azure-pipelines-task-lib/task');
 import trm = require('azure-pipelines-task-lib/toolrunner');
 
-// import * as pkgLocationUtils from "./helpers/locationUtilities";
-// import * as auth from "nuget-task-common/Authentication";
-
-
 async function run() {
     if (process.platform != 'win32') {
         tl.setResult(tl.TaskResult.Failed, "System is " + process.platform + ". Only win32 is supported at the moment")
