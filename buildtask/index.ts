@@ -13,7 +13,7 @@ async function run() {
     try {
 
         // Try Credential Provider
-        var cpArgs = ["-u ", "https://pkgs.dev.azure.com/webdude/_packaging/TestFeed/nuget/v3/index.json", "-S", "vso.packaging_read", "-N, -V", "Detailed"];
+        var cpArgs = ["-U", "https://pkgs.dev.azure.com/webdude/_packaging/TestFeed/nuget/v3/index.json", "-S", "vso.packaging_read", "-N, -V", "Detailed"];
         let toolPathcp = __dirname + "\\..\\bin\\CredentialProvider.VSS.exe";
         let toolcp: trm.ToolRunner = tl.tool(toolPathcp).arg(cpArgs);
         let resultcp: number = await toolcp.exec();
