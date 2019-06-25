@@ -354,7 +354,7 @@ namespace DependencyChecker
                 var username = Environment.GetEnvironmentVariable("BUILD_REQUESTEDFOREMAIL");
                 var token = Environment.GetEnvironmentVariable("SYSTEM_ACCESSTOKEN");
 
-                if(string.IsNullOrEmpty(username))
+                if (string.IsNullOrEmpty(username))
                 {
                     throw new Exception("Username not provided");
                 }
@@ -376,7 +376,7 @@ namespace DependencyChecker
                 _packageMetadataResources.Add(metadataResource);
                 Sources.Add(sr.PackageSource.Source);
 
-                
+
             }
 
             _logger.LogInformation(string.Empty); // Blank line
