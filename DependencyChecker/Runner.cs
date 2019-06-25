@@ -351,19 +351,32 @@ namespace DependencyChecker
             if (!string.IsNullOrEmpty(_options.AzureArtifactsFeedUri))
             {
                 _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
+                var username = Environment.GetEnvironmentVariable("BUILD_REQUESTEDFOREMAIL");
+                var token = Environment.GetEnvironmentVariable("SYSTEM_ACCESSTOKEN");
 
-                //var ps = new PackageSource(_options.AzureArtifactsFeedUri);
-                ////ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "fabrice.andreis@hotmail.com", "z2ffwsimszzgpf4frfptndgbzvqnnl3mbbg4vbwpwbjdx6kzdtva", true);
-                ////ps.Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, "AzureDevOps", "AzureDevOps", true);
-                ////ps.Credentials = new Credential;
-                ////ps.Credentials = 
-                ////var x = Credentialprovider.
-                ////var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
-                //var metadataResource = sr.GetResource<PackageMetadataResource>();
-                //_packageMetadataResources.Add(metadataResource);
-                //Sources.Add(sr.PackageSource.Source);
+                if(string.IsNullOrEmpty(username))
+                {
+                    throw new Exception("Username not provided");
+                }
 
-                //credential
+                if (string.IsNullOrEmpty(token))
+                {
+                    throw new Exception("This features needs access to the OAuth token to query DevOps Artifacts. Please activate OAuth Access for this stage. See https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops#system-variables");
+                }
+
+                _logger.LogInformation("Adding DevOps Feed with the provided credentials...");
+                var ps = new PackageSource(_options.AzureArtifactsFeedUri)
+                {
+                    Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, username, token, true,
+                        "basic,negotiate")
+                };
+
+                var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
+                var metadataResource = sr.GetResource<PackageMetadataResource>();
+                _packageMetadataResources.Add(metadataResource);
+                Sources.Add(sr.PackageSource.Source);
+
+                
             }
 
             _logger.LogInformation(string.Empty); // Blank line
