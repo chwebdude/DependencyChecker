@@ -1,4 +1,5 @@
-﻿using DependencyChecker.Model;
+﻿using Csproj;
+using DependencyChecker.Model;
 using DotBadge;
 using Newtonsoft.Json;
 using NuGet.Common;
@@ -16,7 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using Csproj;
 
 namespace DependencyChecker
 {
@@ -345,6 +345,38 @@ namespace DependencyChecker
                 _packageMetadataResources.Add(resource);
                 _logger.LogInformation("  " + repository + " \t - \t" + repository.PackageSource.Source);
                 Sources.Add(repository.PackageSource.Source);
+            }
+
+
+            if (!string.IsNullOrEmpty(_options.AzureArtifactsFeedUri))
+            {
+                _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
+                var username = Environment.GetEnvironmentVariable("BUILD_REQUESTEDFOREMAIL");
+                var token = Environment.GetEnvironmentVariable("SYSTEM_ACCESSTOKEN");
+
+                if (string.IsNullOrEmpty(username))
+                {
+                    throw new Exception("Username not provided");
+                }
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    throw new Exception("This features needs access to the OAuth token to query DevOps Artifacts. Please activate OAuth Access for this stage. See https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops#system-variables");
+                }
+
+                _logger.LogInformation("Adding DevOps Feed with the provided credentials...");
+                var ps = new PackageSource(_options.AzureArtifactsFeedUri)
+                {
+                    Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, username, token, true,
+                        "basic,negotiate")
+                };
+
+                var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
+                var metadataResource = sr.GetResource<PackageMetadataResource>();
+                _packageMetadataResources.Add(metadataResource);
+                Sources.Add(sr.PackageSource.Source);
+
+
             }
 
             _logger.LogInformation(string.Empty); // Blank line
