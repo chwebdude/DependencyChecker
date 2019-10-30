@@ -263,7 +263,7 @@ namespace DependencyChecker
                 foreach (var packageMetadataResource in _packageMetadataResources)
                 {
                     // Todo: Include Prerelease option
-                    var results = await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None);
+                    var results = await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, new NullSourceCacheContext(), _logger, CancellationToken.None);
                     if (results.Count() != 0)
                     {
                         searchResult = results.Last();
