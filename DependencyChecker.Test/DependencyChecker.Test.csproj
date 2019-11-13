@@ -11,6 +11,7 @@
     <None Remove="TestProjects\CombineProjects\Okay\net462\packages.config" />
     <None Remove="TestProjects\CombineProjects\Okay\ReportReference.html" />
     <None Remove="TestProjects\net462\packages.config" />
+    <None Remove="TestProjects\NuGet.Config" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +67,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestProjects\NetStandard\NetStandard\NetStandard\NetStandard.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestProjects\NuGet.Config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
