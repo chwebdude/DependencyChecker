@@ -11,7 +11,7 @@ namespace DependencyChecker.Test
     public class NuGetConfigTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestNuGetConfig()
         {
 
             var settings = Settings.LoadDefaultSettings(root: null);
