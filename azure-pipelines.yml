@@ -11,7 +11,9 @@ steps:
 
 # Install tfx-cli
 - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@1
-  displayName: 'Use Node CLI for Azure DevOps (tfx-cli): v0.6.x'
+  displayName: "Use Node CLI for Azure DevOps (tfx-cli): v0.7.x"
+  inputs:
+    version: v0.7.x
 
 # Query Dev extension version
 - task: ms-devlabs.vsts-developer-tools-build-tasks.extension-version-build-task.ExtensionVersion@1
