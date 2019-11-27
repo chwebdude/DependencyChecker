@@ -87,9 +87,11 @@ steps:
 
 # Build
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet publish'
   inputs:
-    command: publish
+    command: 'publish'
+    publishWebProjects: false
+    zipAfterPublish: false
+    modifyOutputPath: false
 
 # Execute Tests
 - task: DotNetCoreCLI@2
