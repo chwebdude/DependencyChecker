@@ -2,11 +2,6 @@ import tl = require('azure-pipelines-task-lib/task');
 import trm = require('azure-pipelines-task-lib/toolrunner');
 
 async function run() {
-
-    // if (process.platform != 'win32') {
-    //     tl.setResult(tl.TaskResult.Failed, "System is " + process.platform + ". Only win32 is supported at the moment")
-    // }
-
     try {
         var path = tl.getPathInput("path");
         var searchRecursive = tl.getBoolInput("searchRecursive");
@@ -24,8 +19,15 @@ async function run() {
         var artifactsFeeds = tl.getInput("artifactsFeeds", false);
         var collectionUri = process.env.SYSTEM_COLLECTIONURI;
 
+        var toolPath = '';
 
-        let toolPath = __dirname + "\\..\\bin\\DependencyChecker.exe";
+        if (process.platform == 'win32') {
+            toolPath = __dirname + "\\..\\bin\\win\\DependencyChecker.exe";
+        }
+        else
+        {
+            toolPath = __dirname + "\\..\\bin\\linux\\DependencyChecker";
+        }
 
         let arg = ["--dev-ops-result-file", "--search-path", path, "--report-path", reportPath];
         if (createReport)
