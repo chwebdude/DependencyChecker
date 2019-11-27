@@ -88,6 +88,8 @@ steps:
 # Build
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
+  inputs:
+    command: publish
 
 # Execute Tests
 - task: DotNetCoreCLI@2
