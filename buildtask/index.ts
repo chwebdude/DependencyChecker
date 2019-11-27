@@ -3,9 +3,9 @@ import trm = require('azure-pipelines-task-lib/toolrunner');
 
 async function run() {
 
-    if (process.platform != 'win32') {
-        tl.setResult(tl.TaskResult.Failed, "System is " + process.platform + ". Only win32 is supported at the moment")
-    }
+    // if (process.platform != 'win32') {
+    //     tl.setResult(tl.TaskResult.Failed, "System is " + process.platform + ". Only win32 is supported at the moment")
+    // }
 
     try {
         var path = tl.getPathInput("path");
