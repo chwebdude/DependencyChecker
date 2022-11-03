@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
+
 using DependencyChecker.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -43,7 +45,11 @@ namespace DependencyChecker.Test
             // Check Report File
             var reference = File.ReadAllText("TestProjects/CombineProjects/Okay/ReportReference.html");
             var reportOutput = File.ReadAllText(option.ReportPath);
-            Assert.AreEqual(reference, reportOutput);
+
+            reference = Regex.Replace(reference, @"\s", string.Empty);
+            reportOutput = Regex.Replace(reportOutput, @"\s", string.Empty);
+            
+            Assert.IsTrue(string.Equals(reference, reportOutput, StringComparison.OrdinalIgnoreCase));
         }
 
         [TestMethod]
