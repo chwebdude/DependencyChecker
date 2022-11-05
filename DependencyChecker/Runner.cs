@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
+using Stubble.Core.Settings;
+
 namespace DependencyChecker
 {
     public class Runner
@@ -144,7 +146,7 @@ namespace DependencyChecker
         /// </summary>
         private void CreateOutputDocument()
         {
-            var currentDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? ".";
+            var currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? ".";
             var contentTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Content.html"));
             var reportTemplate = File.ReadAllText(Path.Combine(currentDir, "Templates", "Report.html"));
 
