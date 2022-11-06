@@ -5,6 +5,9 @@
   "main": "badgeCreator.js",
   "author": "chwebdude",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc -p ."
+  },
   "dependencies": {
     "@types/node": "^11.10.4",
     "azure-pipelines-task-lib": "^2.7.7",

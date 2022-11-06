@@ -3,93 +3,93 @@
 
 
 "@types/node@^11.10.4":
-  version "11.10.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.10.4.tgz#3f5fc4f0f322805f009e00ab35a2ff3d6b778e42"
-  integrity sha512-wa09itaLE8L705aXd8F80jnFpxz3Y1/KRHfKsYL2bPc0XF+wEWu8sR9n5bmeu8Ba1N9z2GRNzm/YdHcghLkLKg==
+  "integrity" "sha512-wa09itaLE8L705aXd8F80jnFpxz3Y1/KRHfKsYL2bPc0XF+wEWu8sR9n5bmeu8Ba1N9z2GRNzm/YdHcghLkLKg=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-11.10.4.tgz"
+  "version" "11.10.4"
 
-azure-pipelines-task-lib@^2.7.7:
-  version "2.7.7"
-  resolved "https://registry.yarnpkg.com/azure-pipelines-task-lib/-/azure-pipelines-task-lib-2.7.7.tgz#bb976552cc10e02c39147989b54eed1631c1bc5a"
-  integrity sha512-4KBPheFTxTDqvaY0bjs9/Ab5yb2c/Y5u8gd54UGL2xhGbv2eoahOZPerAUY/vKsUDu2mjlP/JAWTlDv7dghdRQ==
+"azure-pipelines-task-lib@^2.7.7":
+  "integrity" "sha512-4KBPheFTxTDqvaY0bjs9/Ab5yb2c/Y5u8gd54UGL2xhGbv2eoahOZPerAUY/vKsUDu2mjlP/JAWTlDv7dghdRQ=="
+  "resolved" "https://registry.npmjs.org/azure-pipelines-task-lib/-/azure-pipelines-task-lib-2.7.7.tgz"
+  "version" "2.7.7"
   dependencies:
-    minimatch "3.0.4"
-    mockery "^1.7.0"
-    q "^1.1.2"
-    semver "^5.1.0"
-    shelljs "^0.3.0"
-    uuid "^3.0.1"
+    "minimatch" "3.0.4"
+    "mockery" "^1.7.0"
+    "q" "^1.1.2"
+    "semver" "^5.1.0"
+    "shelljs" "^0.3.0"
+    "uuid" "^3.0.1"
 
-balanced-match@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
-  integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
+"balanced-match@^1.0.0":
+  "integrity" "sha1-ibTRmasr7kneFk6gK4nORi1xt2c= sha512-9Y0g0Q8rmSt+H33DfKv7FOc3v+iRI+o1lbzt8jGcIosYW37IIW/2XVYq5NPdmaD5NQ59Nk26Kl/vZbwW9Fr8vg=="
+  "resolved" "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.0.tgz"
+  "version" "1.0.0"
 
-brace-expansion@^1.1.7:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
-  integrity sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==
+"brace-expansion@^1.1.7":
+  "integrity" "sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA=="
+  "resolved" "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.11.tgz"
+  "version" "1.1.11"
   dependencies:
-    balanced-match "^1.0.0"
-    concat-map "0.0.1"
+    "balanced-match" "^1.0.0"
+    "concat-map" "0.0.1"
 
-concat-map@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
-  integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
+"concat-map@0.0.1":
+  "integrity" "sha1-2Klr13/Wjfd5OnMDajug1UBdR3s= sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg=="
+  "resolved" "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
+  "version" "0.0.1"
 
-inherits@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
-  integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
+"inherits@2.0.3":
+  "integrity" "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4= sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw=="
+  "resolved" "https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz"
+  "version" "2.0.3"
 
-minimatch@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
-  integrity sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
+"minimatch@3.0.4":
+  "integrity" "sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA=="
+  "resolved" "https://registry.npmjs.org/minimatch/-/minimatch-3.0.4.tgz"
+  "version" "3.0.4"
   dependencies:
-    brace-expansion "^1.1.7"
+    "brace-expansion" "^1.1.7"
 
-mockery@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/mockery/-/mockery-1.7.0.tgz#f4ede0d8750c1c9727c272ea2c60629e2c9a1c4f"
-  integrity sha1-9O3g2HUMHJcnwnLqLGBiniyaHE8=
+"mockery@^1.7.0":
+  "integrity" "sha1-9O3g2HUMHJcnwnLqLGBiniyaHE8= sha512-gUQA33ayi0tuAhr/rJNZPr7Q7uvlBt4gyJPbi0CDcAfIzIrDu1YgGMFgmAu3stJqBpK57m7+RxUbcS+pt59fKQ=="
+  "resolved" "https://registry.npmjs.org/mockery/-/mockery-1.7.0.tgz"
+  "version" "1.7.0"
 
-path@^0.12.7:
-  version "0.12.7"
-  resolved "https://registry.yarnpkg.com/path/-/path-0.12.7.tgz#d4dc2a506c4ce2197eb481ebfcd5b36c0140b10f"
-  integrity sha1-1NwqUGxM4hl+tIHr/NWzbAFAsQ8=
+"path@^0.12.7":
+  "integrity" "sha1-1NwqUGxM4hl+tIHr/NWzbAFAsQ8= sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q=="
+  "resolved" "https://registry.npmjs.org/path/-/path-0.12.7.tgz"
+  "version" "0.12.7"
   dependencies:
-    process "^0.11.1"
-    util "^0.10.3"
+    "process" "^0.11.1"
+    "util" "^0.10.3"
 
-process@^0.11.1:
-  version "0.11.10"
-  resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
-  integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
+"process@^0.11.1":
+  "integrity" "sha1-czIwDoQBYb2j5podHZGn1LwW8YI= sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A=="
+  "resolved" "https://registry.npmjs.org/process/-/process-0.11.10.tgz"
+  "version" "0.11.10"
 
-q@^1.1.2, q@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
-  integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+"q@^1.1.2", "q@^1.5.1":
+  "integrity" "sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc= sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw=="
+  "resolved" "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
+  "version" "1.5.1"
 
-semver@^5.1.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
-  integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
+"semver@^5.1.0":
+  "integrity" "sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg=="
+  "resolved" "https://registry.npmjs.org/semver/-/semver-5.6.0.tgz"
+  "version" "5.6.0"
 
-shelljs@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.3.0.tgz#3596e6307a781544f591f37da618360f31db57b1"
-  integrity sha1-NZbmMHp4FUT1kfN9phg2DzHbV7E=
+"shelljs@^0.3.0":
+  "integrity" "sha1-NZbmMHp4FUT1kfN9phg2DzHbV7E= sha512-Ny0KN4dyT8ZSCE0frtcbAJGoM/HTArpyPkeli1/00aYfm0sbD/Gk/4x7N2DP9QKGpBsiQH7n6rpm1L79RtviEQ=="
+  "resolved" "https://registry.npmjs.org/shelljs/-/shelljs-0.3.0.tgz"
+  "version" "0.3.0"
 
-util@^0.10.3:
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
-  integrity sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==
+"util@^0.10.3":
+  "integrity" "sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A=="
+  "resolved" "https://registry.npmjs.org/util/-/util-0.10.4.tgz"
+  "version" "0.10.4"
   dependencies:
-    inherits "2.0.3"
+    "inherits" "2.0.3"
 
-uuid@^3.0.1:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
-  integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
+"uuid@^3.0.1":
+  "integrity" "sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA=="
+  "resolved" "https://registry.npmjs.org/uuid/-/uuid-3.3.2.tgz"
+  "version" "3.3.2"

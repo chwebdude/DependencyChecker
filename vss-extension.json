@@ -3,15 +3,15 @@
     "id": "dependency-checker",
     "name": "NuGet Dependency Checker",
     "description": "Tool for checking NuGet dependencies.",
-    "version": "1.2.2",
-    "publisher": "chwebdude",
-    "public": true,
+    "version": "1.3.1",
+    "publisher": "fabricioferreira",
+    "public": false,
     "tags": [
         "Dependency",
         "Extension",
         "Marketplace",
         "Package",
-        "Monitor",    
+        "Monitor",
         "Continuous Integration",
         "Continuous Delivery",
         "Build",
@@ -21,30 +21,33 @@
         {
             "id": "Microsoft.VisualStudio.Services"
         }
-    ],    
+    ],
     "scopes": [
         "vso.build_execute",
         "vso.extension.data_write"
-    ],    
+    ],
     "categories": [
         "Azure Pipelines"
     ],
     "icons": {
-        "default": "images/extension-icon.png"        
+        "default": "images/extension-icon.png"
     },
     "files": [
         {
             "path": "buildtask/dist/index.js"
-        },{
+        },
+        {
             "path": "buildtask/node_modules"
-        },{
+        },
+        {
             "path": "buildtask/task.json"
-        },{
+        },
+        {
             "path": "buildtask/icon.png"
-        },{
+        },
+        {
             "path": "buildtask/bin"
         },
-
         {
             "path": "buildtab/tab.html",
             "addressable": true
@@ -85,16 +88,16 @@
             ],
             "properties": {
                 "name": "Dependency Status",
-                 "uri": "buildtab/tab.html"
+                "uri": "buildtab/tab.html"
             }
         }
     ],
-    "content":{
-        "details":{
+    "content": {
+        "details": {
             "path": "Readme.md"
         }
     },
-    "screenshots":[
+    "screenshots": [
         {
             "path": "images/reportTab.png"
         },
@@ -106,18 +109,17 @@
         },
         {
             "path": "images/overview.jpg"
-        }        
+        }
     ],
-
     "links": {
         "repository": {
-        "uri": "https://github.com/chwebdude/DependencyChecker"
+            "uri": "https://github.com/chwebdude/DependencyChecker"
         },
         "issues": {
-        "uri": "https://github.com/chwebdude/DependencyChecker/issues"
+            "uri": "https://github.com/chwebdude/DependencyChecker/issues"
         },
         "support": {
-        "uri": "https://github.com/chwebdude/DependencyChecker"
+            "uri": "https://github.com/chwebdude/DependencyChecker"
         }
     },
     "repository": {
@@ -127,8 +129,8 @@
     "badges": [
         {
             "href": "https://dev.azure.com/webdude/DependencyChecker/_build?definitionId=22&_a=summary",
-            "uri":"https://dev.azure.com/webdude/DependencyChecker/_apis/build/status/DependencyChecker",
-            "description": "CI Build" 
+            "uri": "https://dev.azure.com/webdude/DependencyChecker/_apis/build/status/DependencyChecker",
+            "description": "CI Build"
         }
     ]
 }
