@@ -78,7 +78,7 @@
             "label": "Use Azure Artifacts",
             "defaultValue": "false",
             "helpMarkDown": "Select if you want to use Azure Artifacts as datasource",
-            "required": "true",
+            "required": true,
             "groupName": "search"
         },
         {
@@ -87,7 +87,7 @@
             "label": "Use packages from this Azure Artifacts feed",
             "defaultValue": "",
             "helpMarkDown": "Include the selected feed in the generated NuGet.config. You must have Azure Artifacts installed and licensed to select a feed here.",
-            "required": "false",
+            "required": false,
             "groupName": "search",
             "visibleRule": "useArtifacts = true"
         },
