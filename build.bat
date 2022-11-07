@@ -1,7 +1,7 @@
 cd ./buildtab
-cmd /c "npm i && npm run build"
+cmd /c "yarn && yarn run build"
 cd ../buildtask
-cmd /c "npm i && npm run build"
+cmd /c "yarn && yarn run build"
 cd ..
 dotnet restore
 dotnet build -c Release --no-restore
