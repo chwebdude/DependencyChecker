@@ -265,10 +265,13 @@ namespace DependencyChecker
                 foreach (var packageMetadataResource in _packageMetadataResources)
                 {
                     // Todo: Include Prerelease option
-                    var results = await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None);
-                    if (results.Count() != 0)
+                    var results = (await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None))
+                        .ToList();
+                    if (results.Any())
                     {
-                        searchResult = results.Last();
+                        searchResult = results
+                            .OrderByDescending(r => r.Published)
+                            .First();
                         break;
                     }
                 }
@@ -369,8 +372,7 @@ namespace DependencyChecker
                 _logger.LogInformation("Adding DevOps Feed with the provided credentials...");
                 var ps = new PackageSource(_options.AzureArtifactsFeedUri)
                 {
-                    Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, username, token, true,
-                        "basic,negotiate")
+                    Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, username, token, true, "basic,negotiate")
                 };
 
                 var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());

@@ -80,4 +80,3 @@ InfoTab.enhance(InfoTab, $(".build-info"), {});
 
 // Notify the parent frame that the host has been loaded
 VSS.notifyLoadSucceeded();
-
