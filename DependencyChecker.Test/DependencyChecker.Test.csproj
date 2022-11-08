@@ -50,6 +50,9 @@
     <Content Include="TestProjects\CombineProjects\Different\net462\packages.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestProjects\Sorted\DependencyCheckerSorted.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DependencyChecker\DependencyChecker.csproj" />

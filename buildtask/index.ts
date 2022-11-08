@@ -21,8 +21,8 @@ async function run() {
         var nuGetFile = tl.getPathInput("customNuGetfile", false);
         var useArtifacts = tl.getBoolInput("useArtifacts", true);
         var artifactsFeeds = tl.getInput("artifactsFeeds", false);
+        var sortByOutdated = tl.getBoolInput("sortByOutdated", false);
         var collectionUri = process.env.SYSTEM_COLLECTIONURI;
-
 
         let toolPath = __dirname + "\\..\\bin\\DependencyChecker.exe";
 
@@ -59,6 +59,9 @@ async function run() {
             artifactsUri = artifactsUri.replace("visualstudio.com", "pkgs.visualstudio.com");
             arg.push("--azure-artifacts-uri", artifactsUri);
         }
+
+        if (sortByOutdated)
+            arg.push("--sort-by-outdated");
 
         let tool: trm.ToolRunner = tl.tool(toolPath).arg(arg);
         let result: number = await tool.exec();

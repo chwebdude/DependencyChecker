@@ -45,6 +45,9 @@ namespace DependencyChecker.Model
 
         [Option("azure-artifacts-uri", Required = false, HelpText = "An additional source like Azure Artifacts")]
         public string AzureArtifactsFeedUri{ get; set; }
+        
+        [Option("sort-by-outdated", Required = false, HelpText = "Sort by outdated packages, bringing them first in the list.")]
+        public bool SortByOutdated { get; set; }
 
         #endregion
     }
