@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/node": "^11.10.4",
-    "azure-pipelines-task-lib": "^2.7.7",
+    "azure-pipelines-task-lib": "^4.0.1-preview",
     "path": "^0.12.7",
     "q": "^1.5.1"
   },
