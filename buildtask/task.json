@@ -171,6 +171,16 @@
             "helpMarkDown": "Location and name where to save report.",
             "groupName": "report",
             "visibleRule": "createReport = true"
+        },
+        {
+            "name": "sortByOutdated",
+            "type": "boolean",
+            "label": "Outdated First",
+            "defaultValue": false,
+            "required": false,
+            "helpMarkDown": "Put the outdated packages at the top of the report.",
+            "groupName": "report",
+            "visibleRule": "createReport = true"
         }
     ],
     "dataSourceBindings": [

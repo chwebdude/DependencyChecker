@@ -27,20 +27,16 @@ namespace DependencyChecker
         #region Fields
 
         private readonly ILogger _logger = new Logger();
-
-        private readonly List<PackageMetadataResource> _packageMetadataResources = new List<PackageMetadataResource>();
-
-        private readonly Dictionary<string, IPackageSearchMetadata> currentPackageCache = new Dictionary<string, IPackageSearchMetadata>();
-
-        public readonly List<CodeProject> CodeProjects = new List<CodeProject>();
-
+        private readonly List<PackageMetadataResource> _packageMetadataResources = new();
+        private readonly Dictionary<string, IPackageSearchMetadata> _currentPackageCache = new();
+        public readonly List<CodeProject> CodeProjects = new();
         private Options _options;
 
         #endregion
 
         #region Properties
 
-        public List<string> Sources { get; } = new List<string>();
+        public List<string> Sources { get; } = new();
 
         #endregion
 
@@ -152,6 +148,12 @@ namespace DependencyChecker
 
             // Render Content
             var stubble = new StubbleBuilder().Build();
+
+            if (_options.SortByOutdated)
+            {
+                SortPackageStatusesInPlace(CodeProjects);
+            }
+            
             var projectsContent = stubble.Render(contentTemplate, new { Projects = CodeProjects });
 
             // Insert content into report file
@@ -159,6 +161,17 @@ namespace DependencyChecker
             var directory = new FileInfo(_options.ReportPath).Directory.FullName;
             Directory.CreateDirectory(directory);
             File.WriteAllText(_options.ReportPath, report);
+        }
+
+        private void SortPackageStatusesInPlace(List<CodeProject> codeProjects)
+        {
+            foreach (CodeProject project in codeProjects
+                         .Where(p => p.HasPackages && p.PackageStatuses.Count > 1))
+            {
+                project.PackageStatuses = project.PackageStatuses
+                    .OrderByDescending(ps => ps.Outdated)
+                    .ToList();
+            }
         }
 
 
@@ -214,12 +227,11 @@ namespace DependencyChecker
         /// </summary>
         /// <param name="packageFile">The package file.</param>
         /// <returns>Task&lt;List&lt;PackageStatus&gt;&gt;.</returns>
-        private async Task<List<PackageStatus>> GetPackagesFromPackgesConfig(string packageFile)
+        private async Task<List<PackageStatus>> GetPackagesFromPackagesConfig(string packageFile)
         {
             // Parse file content
             var serializer = new XmlSerializer(typeof(packages));
             var data = (packages)serializer.Deserialize(new XmlTextReader(packageFile));
-
 
             // Check status of each package
             var packageStatuses = new List<PackageStatus>();
@@ -255,34 +267,16 @@ namespace DependencyChecker
         /// <returns>Task&lt;PackageStatus&gt;.</returns>
         private async Task<PackageStatus> GetPackageStatus(string packageId, string installedVersion)
         {
-            IPackageSearchMetadata searchResult = null;
-            if (currentPackageCache.ContainsKey(packageId))
+            if (!_currentPackageCache.TryGetValue(packageId, out IPackageSearchMetadata package))
             {
-                searchResult = currentPackageCache[packageId];
-            }
-            else
-            {
-                foreach (var packageMetadataResource in _packageMetadataResources)
-                {
-                    // Todo: Include Prerelease option
-                    var results = (await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None))
-                        .ToList();
-                    if (results.Any())
-                    {
-                        searchResult = results
-                            .OrderByDescending(r => r.Published)
-                            .First();
-                        break;
-                    }
-                }
-                currentPackageCache.Add(packageId, searchResult);
+                package = await LoadPackageIntoCache(packageId);
             }
 
             // Parse Version information
             var parsingResult = NuGetVersion.TryParse(installedVersion, out var installedVersionParsed);
 
             // Return if not found
-            if (searchResult == null)
+            if (package == null)
             {
                 _logger.LogError($"---> Package {packageId} is was not found on any source.");
                 return new PackageStatus
@@ -295,7 +289,7 @@ namespace DependencyChecker
             }
 
             // Compare installed versions
-            var currentVersion = searchResult.Identity.Version;
+            var currentVersion = package.Identity.Version;
             var outdated = false;
             if (currentVersion.CompareTo(installedVersionParsed) == 1)
             {
@@ -303,17 +297,37 @@ namespace DependencyChecker
                 _logger.LogWarning($"---> Package {packageId} is out of date. Current Version: {currentVersion}. Installed Version: {installedVersionParsed}");
             }
 
-
             return new PackageStatus
             {
-                CurrentVersion = searchResult.Identity.Version.ToString(),
+                CurrentVersion = package.Identity.Version.ToString(),
                 Id = packageId,
                 InstalledVersion = installedVersion,
                 NoLocalVersion = !parsingResult,
                 NotFound = false,
                 Outdated = outdated,
-                ProjectUrl = searchResult.ProjectUrl
+                ProjectUrl = package.ProjectUrl
             };
+        }
+
+        private async Task<IPackageSearchMetadata> LoadPackageIntoCache(string packageId)
+        {
+            foreach (PackageMetadataResource packageMetadataResource in _packageMetadataResources)
+            {
+                // Todo: Include Prerelease option
+                var results = (await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None))
+                    .ToList();
+                
+                if (!results.Any()) continue;
+                
+                IPackageSearchMetadata searchResult = results
+                    .OrderByDescending(r => r.Published)
+                    .First();
+                
+                _currentPackageCache.Add(packageId, searchResult);
+                return searchResult;
+            }
+
+            return null;
         }
 
 
@@ -414,7 +428,7 @@ namespace DependencyChecker
                     try
                     {
                         // Get information in old Format
-                        var packages = await GetPackagesFromPackgesConfig(packageFile);
+                        var packages = await GetPackagesFromPackagesConfig(packageFile);
                         CodeProjects.Add(new CodeProject
                         {
                             Name = file.Name.Replace(file.Extension, string.Empty),
