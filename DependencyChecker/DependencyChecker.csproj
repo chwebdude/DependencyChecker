@@ -43,7 +43,7 @@
     <PackageReference Include="DotBadge" Version="1.2.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.VisualStudio.Services.NuGet.CredentialProvider" Version="0.37.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="NuGet.Common" Version="6.3.1" />
     <PackageReference Include="NuGet.Configuration" Version="6.3.1" />
     <PackageReference Include="NuGet.Frameworks" Version="6.3.1" />
