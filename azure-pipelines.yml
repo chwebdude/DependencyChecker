@@ -45,7 +45,7 @@ jobs:
         displayName: 'Versioning .Net Core'
         inputs:
           Path: '$(Build.SourcesDirectory)'
-          FileNames: '**/*.csproj'
+          FileNames: 'DependencyChecker/*.csproj'
           InsertAttributes: false
           FileEncoding: 'auto'
           WriteBOM: false
