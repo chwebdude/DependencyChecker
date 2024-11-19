@@ -6,7 +6,7 @@ pool:
 
 variables:
   - name: DotnetVersion
-    value: '6.0'
+    value: '6'
 
 jobs:
   - job:
@@ -14,7 +14,7 @@ jobs:
     condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
     variables:
       - name: BuildConfiguration
-        value: Debug      
+        value: Debug
     steps:
       - task: TfxInstaller@4
         displayName: 'Install newest tfx-cli'
@@ -96,7 +96,7 @@ jobs:
         displayName: 'Use .Net Core'
         inputs:
           packageType: 'sdk'
-          version: '$(DotnetVersion)'
+          version: '$(DotnetVersion).x'
       
       - task: DotNetCoreCLI@2
         displayName: 'Restore .Net Packages'
@@ -118,7 +118,7 @@ jobs:
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)\buildtask\bin'
         inputs:
-          SourceFolder: 'DependencyChecker\bin\$(BuildConfiguration)\net$(DotnetVersion)'
+          SourceFolder: 'DependencyChecker\bin\$(BuildConfiguration)\net$(DotnetVersion).0'
           Contents: '**'
           TargetFolder: '$(System.DefaultWorkingDirectory)\buildtask\bin'
       
