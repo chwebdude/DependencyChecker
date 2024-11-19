@@ -1,0 +1,143 @@
+trigger:
+- '*'
+
+pool:
+  vmImage: windows-latest
+
+variables:
+  - name: DotnetVersion
+    value: '6'
+
+jobs:
+  - job:
+    displayName: 'Deploy Dev'
+    condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
+    variables:
+      - name: BuildConfiguration
+        value: Debug
+    steps:
+      - task: TfxInstaller@4
+        displayName: 'Install newest tfx-cli'
+        inputs:
+          version: v0.x
+
+      - task: QueryAzureDevOpsExtensionVersion@4
+        inputs:
+          connectTo: 'VsTeam'
+          connectedServiceName: 'Marketplace'
+          publisherId: 'chwebdude'
+          extensionId: 'a46650ae-fa0a-458f-8ca1-7ae59c43838d'
+          versionAction: 'Patch'
+          setBuildNumber: 'true'
+        
+
+      - task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-NetFramework@2
+        displayName: 'Set Assembly Manifest Data'
+        inputs:
+          Path: '$(Build.SourcesDirectory)'
+          FileNames: |
+            **\AssemblyInfo.cs
+            **\AssemblyInfo.vb
+          InsertAttributes: false
+          FileEncoding: 'auto'
+          WriteBOM: false
+          VersionNumber: '$(Build.BuildNumber)'
+          FileVersionNumber: '$(Build.BuildNumber)'
+          InformationalVersion: '$(Build.BuildNumber)'
+          LogLevel: 'verbose'
+          FailOnWarning: false
+          DisableTelemetry: true
+
+      - task: Assembly-Info-NetCore@3
+        displayName: 'Versioning .Net Core'
+        inputs:
+          Path: '$(Build.SourcesDirectory)'
+          FileNames: 'DependencyChecker/*.csproj'
+          InsertAttributes: false
+          FileEncoding: 'auto'
+          WriteBOM: false
+          VersionNumber: '$(Build.BuildNumber)'
+          FileVersionNumber: '$(Build.BuildNumber)'
+          InformationalVersion: '$(Build.BuildNumber)'
+          PackageVersion: '$(Build.BuildNumber)'
+          LogLevel: 'verbose'
+          FailOnWarning: false
+          DisableTelemetry: true
+
+      - task: YarnInstaller@3
+        displayName: 'Use Yarn 1.x'
+        inputs:
+          versionSpec: '1.x'
+          checkLatest: true
+      
+      - task: Yarn@2
+        displayName: 'Restore packages Tab'
+        inputs:
+          ProjectDirectory: 'buildtab'
+      
+      - task: compile-type-script@1
+        displayName: 'Compile TypeScript Tab'
+        inputs:
+          compileType: '1'
+          projectPath: 'buildtab'
+      
+      - task: Yarn@2
+        displayName: 'Restore packages Task'
+        inputs:
+          ProjectDirectory: 'buildtask'
+      
+      - task: compile-type-script@1
+        displayName: 'Compile TypeScript Task'
+        inputs:
+          compileType: '1'
+          projectPath: 'buildtask'
+
+      - task: UseDotNet@2
+        displayName: 'Use .Net Core'
+        inputs:
+          packageType: 'sdk'
+          version: '$(DotnetVersion).x'
+      
+      - task: DotNetCoreCLI@2
+        displayName: 'Restore .Net Packages'
+        inputs:
+          command: 'restore'
+      
+      - task: DotNetCoreCLI@2
+        displayName: 'Build tool'
+        inputs:
+          command: 'build'
+          arguments: '--no-restore'
+      
+      - task: DotNetCoreCLI@2
+        displayName: 'Test Tool'
+        inputs:
+          command: 'test'
+          arguments: '--no-build --verbosity normal'
+      
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)\buildtask\bin'
+        inputs:
+          SourceFolder: 'DependencyChecker\bin\$(BuildConfiguration)\net$(DotnetVersion).0'
+          Contents: '**'
+          TargetFolder: '$(System.DefaultWorkingDirectory)\buildtask\bin'
+      
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish pipeline Artifact'
+        inputs:
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: 'drop'
+          publishLocation: 'pipeline'
+
+      - task: PublishAzureDevOpsExtension@4
+        displayName: 'Publish & Validate Extension'
+        inputs:
+          connectTo: 'VsTeam'
+          connectedServiceName: 'Marketplace'
+          fileType: 'manifest'
+          extensionId: 'a46650ae-fa0a-458f-8ca1-7ae59c43838d'
+          extensionName: 'dependency-checker-dev'
+          extensionVersion: '$(Build.BuildNumber)'
+          updateTasksId: true
+          extensionVisibility: 'private'
+          shareWith: 'webdude'
