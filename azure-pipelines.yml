@@ -39,7 +39,7 @@ jobs:
           InformationalVersion: '$(Build.BuildNumber)'
           LogLevel: 'verbose'
           FailOnWarning: false
-          DisableTelemetry: false
+          DisableTelemetry: true
 
       - task: Assembly-Info-NetCore@3
         displayName: 'Versioning .Net Core'
@@ -55,7 +55,7 @@ jobs:
           PackageVersion: '$(Build.BuildNumber)'
           LogLevel: 'verbose'
           FailOnWarning: false
-          DisableTelemetry: false
+          DisableTelemetry: true
 
       - task: YarnInstaller@3
         displayName: 'Use Yarn 1.x'
