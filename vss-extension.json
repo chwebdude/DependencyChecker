@@ -3,8 +3,8 @@
     "id": "dependency-checker",
     "name": "NuGet Dependency Checker",
     "description": "Tool for checking NuGet dependencies.",
-    "version": "1.3.1",
-    "publisher": "chwebdude",
+    "version": "1.5.0",
+    "publisher": "omada-identity",
     "public": true,
     "tags": [
         "Dependency",
