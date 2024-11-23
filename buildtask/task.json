@@ -1,12 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-  "id": "5af418b2-7745-4a40-b048-0971fa3bce8e",
+  "id": "7ab49694-b37b-4b64-b96e-b66d76deec22",
   "name": "dependency-checker",
   "friendlyName": "NuGet Dependency Check",
   "description": "Tool for checking NuGet dependencies.",
   "helpUrl": "https://marketplace.visualstudio.com/items?itemName=chwebdude.dependency-checker",
   "category": "Utility",
-  "author": "omada-identity",
+  "author": "chwebdude",
   "version": {
     "Major": 1,
     "Minor": 3,
