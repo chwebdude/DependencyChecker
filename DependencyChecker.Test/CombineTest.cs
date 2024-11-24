@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
 
 using DependencyChecker.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NuGet.Configuration;
+using NuGet.Protocol.Core.Types;
 
 namespace DependencyChecker.Test
 {

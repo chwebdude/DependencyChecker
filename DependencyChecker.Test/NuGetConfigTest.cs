@@ -1,7 +1,6 @@
 ﻿using DependencyChecker.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NuGet.Configuration;
-using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using System.Linq;
 
@@ -15,7 +14,7 @@ namespace DependencyChecker.Test
         {
 
             var settings = Settings.LoadDefaultSettings(root: null);
-            var sourceRepositoryProvider = new SourceRepositoryProvider(settings, Repository.Provider.GetCoreV3());
+            var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
             var beforeCount = sourceRepositoryProvider.GetRepositories().Count();
 
             var option = new Options()
@@ -32,8 +31,6 @@ namespace DependencyChecker.Test
             Assert.IsNotNull(runner.Sources.SingleOrDefault(n => n == @"C:\NuGetTest"));
             Assert.IsNotNull(runner.Sources.SingleOrDefault(n => n == @"C:\NuGetTest2"));
             Assert.AreEqual(beforeCount + 2, runner.Sources.Count);
-
-
         }
     }
 }

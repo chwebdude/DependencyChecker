@@ -5,7 +5,6 @@
         "sourceMap": false,
         "moduleResolution": "node",
         "outDir": "dist/",
-        "noImplicitAny": false,
-        "watch":false        
+        "noImplicitAny": false
     }
 }
