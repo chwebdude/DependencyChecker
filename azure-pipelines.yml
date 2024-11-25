@@ -6,7 +6,7 @@ pool:
 
 variables:
   - name: DotnetVersion
-    value: '6'
+    value: '8'
 
 jobs:
   - job:
