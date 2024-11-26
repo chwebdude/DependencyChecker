@@ -3,7 +3,7 @@
     "id": "dependency-checker",
     "name": "NuGet Dependency Checker",
     "description": "Tool for checking NuGet dependencies.",
-    "version": "2.2.0",
+    "version": "1.4.0",
     "publisher": "chwebdude",
     "public": true,
     "tags": [
