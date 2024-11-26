@@ -4,7 +4,6 @@ using DotBadge;
 using Newtonsoft.Json;
 using NuGet.Common;
 using NuGet.Configuration;
-using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using Stubble.Core.Builders;
@@ -13,12 +12,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-
-using Stubble.Core.Settings;
 
 namespace DependencyChecker
 {
@@ -29,6 +27,7 @@ namespace DependencyChecker
         private readonly ILogger _logger = new Logger();
         private readonly List<PackageMetadataResource> _packageMetadataResources = new();
         private readonly Dictionary<string, IPackageSearchMetadata> _currentPackageCache = new();
+        private readonly SourceCacheContext _sourceCacheContext = new();
         public readonly List<CodeProject> CodeProjects = new();
         private Options _options;
 
@@ -153,7 +152,7 @@ namespace DependencyChecker
             {
                 SortPackageStatusesInPlace(CodeProjects);
             }
-            
+
             var projectsContent = stubble.Render(contentTemplate, new { Projects = CodeProjects });
 
             // Insert content into report file
@@ -313,16 +312,15 @@ namespace DependencyChecker
         {
             foreach (PackageMetadataResource packageMetadataResource in _packageMetadataResources)
             {
-                // Todo: Include Prerelease option
-                var results = (await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _logger, CancellationToken.None))
+                var results = (await packageMetadataResource.GetMetadataAsync(packageId, _options.IncludePrereleases, false, _sourceCacheContext, _logger, CancellationToken.None))
                     .ToList();
-                
+
                 if (!results.Any()) continue;
-                
+
                 IPackageSearchMetadata searchResult = results
                     .OrderByDescending(r => r.Published)
                     .First();
-                
+
                 _currentPackageCache.Add(packageId, searchResult);
                 return searchResult;
             }
@@ -337,6 +335,11 @@ namespace DependencyChecker
         private void Initialize()
         {
             _logger.LogInformation("Using Sources:");
+            var username = Environment.GetEnvironmentVariable("DEPC_NUGET_USERNAME") ?? "noUserProvided";
+            var password = Environment.GetEnvironmentVariable("DEPC_NUGET_PASSWORD") ?? string.Empty;
+            var sourcesPrefix = Environment.GetEnvironmentVariable("DEPC_NUGET_SOURCESPREFIX")?.Split(',').ToList() ?? [];
+            var packageSourceFilter = Environment.GetEnvironmentVariable("DEPC_NUGET_PACKAGE_SOURCE_FILTER") ?? "";
+            var validAuthenticationTypes = Environment.GetEnvironmentVariable("DEPC_NUGET_VALID_AUTHENTICATION_TYPES") ?? "basic,negotiate";
 
             var settings = Settings.LoadDefaultSettings(null);
             if (!string.IsNullOrEmpty(_options.CustomNuGetFile))
@@ -356,29 +359,57 @@ namespace DependencyChecker
                 }
             }
 
-            var sourceRepositoryProvider = new SourceRepositoryProvider(settings, Repository.Provider.GetCoreV3());
-            var sourceRepository = sourceRepositoryProvider.GetRepositories();
-            foreach (var repository in sourceRepository)
+            var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
+            var sourceRepositories = sourceRepositoryProvider.GetRepositories();
+            foreach (var sourceRepository in sourceRepositories)
             {
-                var resource = repository.GetResource<PackageMetadataResource>();
-                _packageMetadataResources.Add(resource);
-                _logger.LogInformation("  " + repository + " \t - \t" + repository.PackageSource.Source);
-                Sources.Add(repository.PackageSource.Source);
+                var sourceUri = sourceRepository.PackageSource.Source;
+                var sourceName = sourceRepository.PackageSource.Name;
+
+                if (!string.IsNullOrEmpty(packageSourceFilter) && Regex.IsMatch(sourceName, packageSourceFilter, RegexOptions.IgnoreCase))
+                {
+                    _logger.LogInformation($"  Skipping source {sourceUri} because it matches the provided 'DEPC_NUGET_PACKAGE_SOURCE_FILTER'");
+                    continue;
+                }
+
+                var ps = new PackageSource(sourceUri);
+                if (sourcesPrefix.Any(sp => sourceUri.StartsWith(sp, StringComparison.OrdinalIgnoreCase)) &&
+                    !string.IsNullOrEmpty(password))
+                {
+                    _logger.LogInformation($"  Adding {sourceUri} with credentials");
+                    ps = new PackageSource(sourceUri, sourceName)
+                    {
+                        Credentials = new PackageSourceCredential(
+                            source: sourceUri,
+                            username: username,
+                            passwordText: password,
+                            isPasswordClearText: true,
+                            validAuthenticationTypesText: validAuthenticationTypes)
+                    };
+                }
+
+                var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
+                var metadataResource = sr.GetResource<PackageMetadataResource>();
+                _packageMetadataResources.Add(metadataResource);
+                _logger.LogInformation("  " + sr + " \t - \t" + sr.PackageSource.Source);
+                Sources.Add(sr.PackageSource.Source);
+
+
             }
 
 
             if (!string.IsNullOrEmpty(_options.AzureArtifactsFeedUri))
             {
                 _logger.LogInformation($"Adding Azure Feed: {_options.AzureArtifactsFeedUri}");
-                var username = Environment.GetEnvironmentVariable("BUILD_REQUESTEDFOREMAIL");
-                var token = Environment.GetEnvironmentVariable("SYSTEM_ACCESSTOKEN");
+                var requestedForEmail = Environment.GetEnvironmentVariable("BUILD_REQUESTEDFOREMAIL");
+                var systemAccessToken = Environment.GetEnvironmentVariable("SYSTEM_ACCESSTOKEN");
 
-                if (string.IsNullOrEmpty(username))
+                if (string.IsNullOrEmpty(requestedForEmail))
                 {
-                    throw new Exception("Username not provided");
+                    throw new Exception("Username not provided (BUILD_REQUESTEDFOREMAIL)");
                 }
 
-                if (string.IsNullOrEmpty(token))
+                if (string.IsNullOrEmpty(systemAccessToken))
                 {
                     throw new Exception("This features needs access to the OAuth token to query DevOps Artifacts. Please activate OAuth Access for this stage. See https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops#system-variables");
                 }
@@ -386,15 +417,13 @@ namespace DependencyChecker
                 _logger.LogInformation("Adding DevOps Feed with the provided credentials...");
                 var ps = new PackageSource(_options.AzureArtifactsFeedUri)
                 {
-                    Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, username, token, true, "basic,negotiate")
+                    Credentials = new PackageSourceCredential(_options.AzureArtifactsFeedUri, requestedForEmail, systemAccessToken, true, validAuthenticationTypes)
                 };
 
                 var sr = new SourceRepository(ps, Repository.Provider.GetCoreV3());
                 var metadataResource = sr.GetResource<PackageMetadataResource>();
                 _packageMetadataResources.Add(metadataResource);
                 Sources.Add(sr.PackageSource.Source);
-
-
             }
 
             _logger.LogInformation(string.Empty); // Blank line

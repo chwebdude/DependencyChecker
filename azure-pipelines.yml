@@ -1,6 +1,12 @@
 trigger:
 - '*'
 
+variables:
+   major: 1
+   minor: 0
+
+name: $(major).$(minor)$(Rev:.r)
+
 pool:
   vmImage: windows-latest
 
