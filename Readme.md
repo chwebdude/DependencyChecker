@@ -58,6 +58,13 @@ Create a report of the packages.
 ### Report Path
 Location and name where to save report.
 
+## Development
+
+The buld pipeline is automaticly triggered for all commits in this Repo. The pipeline generates a new preview extension which can be used for testing.
+Pipeline runs from the `master` branch will be deployed automaticly to the public extension registry. 
+Assemblies and task are versioned according to the last published extension version by increasing the version number.
+
+If you are forking this repo are creating a PR, the pipeline will not publish the extension to the marketplace.
 
 ## Thanks
 Following open source libraries are used for this little project. Thank you for your great work!

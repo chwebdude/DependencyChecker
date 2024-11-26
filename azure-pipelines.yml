@@ -43,6 +43,7 @@ jobs:
           extensionId: '$(ExtensionId)'
           versionAction: 'Minor'
           setBuildNumber: 'true'
+        condition: and(succeeded(), eq(variables['Build.Repository.Name'], 'chwebdude/DependencyChecker'))
         
 
       - task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-NetFramework@2
@@ -61,6 +62,7 @@ jobs:
           LogLevel: 'verbose'
           FailOnWarning: false
           DisableTelemetry: true
+        condition: and(succeeded(), eq(variables['Build.Repository.Name'], 'chwebdude/DependencyChecker'))
 
       - task: Assembly-Info-NetCore@3
         displayName: 'Versioning .Net Core'
@@ -77,6 +79,7 @@ jobs:
           LogLevel: 'verbose'
           FailOnWarning: false
           DisableTelemetry: true
+        condition: and(succeeded(), eq(variables['Build.Repository.Name'], 'chwebdude/DependencyChecker'))
 
       - task: YarnInstaller@3
         displayName: 'Use Yarn 1.x'
@@ -127,7 +130,7 @@ jobs:
         displayName: 'Test Tool'
         inputs:
           command: 'test'
-          arguments: '--no-build --verbosity normal'
+          arguments: '--no-build --verbosity normal --configuration $(BuildConfiguration)'
       
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)\buildtask\bin'
@@ -155,3 +158,4 @@ jobs:
           updateTasksId: true
           extensionVisibility: '$(ExtensionVisibility)'
           shareWith: 'webdude'
+        condition: and(succeeded(), eq(variables['Build.Repository.Name'], 'chwebdude/DependencyChecker'))
