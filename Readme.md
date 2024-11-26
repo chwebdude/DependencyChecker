@@ -1,7 +1,7 @@
 # NuGet Dependency Checker
 
-[Release Version](https://marketplace.visualstudio.com/items?itemName=chwebdude.dependency-checker)
-[Preview Version](https://marketplace.visualstudio.com/items?itemName=chwebdude.a46650ae-fa0a-458f-8ca1-7ae59c43838d)
+- [Release Version](https://marketplace.visualstudio.com/items?itemName=chwebdude.dependency-checker)
+- [Preview Version](https://marketplace.visualstudio.com/items?itemName=chwebdude.a46650ae-fa0a-458f-8ca1-7ae59c43838d)
 
 [![Build status](https://dev.azure.com/webdude/DependencyChecker/_apis/build/status/DependencyChecker)](https://dev.azure.com/webdude/DependencyChecker/_build/latest?definitionId=22)
 
