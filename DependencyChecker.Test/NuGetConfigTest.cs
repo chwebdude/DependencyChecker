@@ -15,7 +15,7 @@ namespace DependencyChecker.Test
         {
 
             var settings = Settings.LoadDefaultSettings(root: null);
-            var sourceRepositoryProvider = new SourceRepositoryProvider(settings, Repository.Provider.GetCoreV3());
+            var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
             var beforeCount = sourceRepositoryProvider.GetRepositories().Count();
 
             var option = new Options()
