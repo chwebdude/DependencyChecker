@@ -1,10 +1,13 @@
 # NuGet Dependency Checker
 
+[Release Version](https://marketplace.visualstudio.com/items?itemName=chwebdude.dependency-checker)
+[Preview Version](https://marketplace.visualstudio.com/items?itemName=chwebdude.a46650ae-fa0a-458f-8ca1-7ae59c43838d)
+
 [![Build status](https://dev.azure.com/webdude/DependencyChecker/_apis/build/status/DependencyChecker)](https://dev.azure.com/webdude/DependencyChecker/_build/latest?definitionId=22)
 
 Simple Tool for checking NuGet Dependencies and publish a report as build artifact. The results will be added to a new build tab and can be saved as build artifact. *(no dashboard widget yet, but i will work on it!)*.
 
-**Feel free to submit future requests as issues!**
+**Feel free to submit pull requests for new features!**
 
 ## Configuration
 ![Overview](https://raw.githubusercontent.com/chwebdude/DependencyChecker/master/images/overview.jpg)
@@ -60,7 +63,7 @@ Location and name where to save report.
 
 ## Development
 
-The buld pipeline is automaticly triggered for all commits in this Repo. The pipeline generates a new preview extension which can be used for testing.
+The buld pipeline is automaticly triggered for all commits in this Repo. The pipeline generates a new [preview extension](https://marketplace.visualstudio.com/items?itemName=chwebdude.a46650ae-fa0a-458f-8ca1-7ae59c43838d) which can be used for testing.
 Pipeline runs from the `master` branch will be deployed automaticly to the public extension registry. 
 Assemblies and task are versioned according to the last published extension version by increasing the version number.
 
