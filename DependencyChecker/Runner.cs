@@ -340,7 +340,6 @@ namespace DependencyChecker
             var sourcesPrefix = Environment.GetEnvironmentVariable("DEPC_NUGET_SOURCESPREFIX")?.Split(',').ToList() ?? [];
             var packageSourceFilter = Environment.GetEnvironmentVariable("DEPC_NUGET_PACKAGE_SOURCE_FILTER") ?? "";
             var validAuthenticationTypes = Environment.GetEnvironmentVariable("DEPC_NUGET_VALID_AUTHENTICATION_TYPES") ?? "basic,negotiate";
-            
 
             var settings = Settings.LoadDefaultSettings(null);
             if (!string.IsNullOrEmpty(_options.CustomNuGetFile))
