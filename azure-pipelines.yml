@@ -41,9 +41,6 @@ jobs:
           InsertAttributes: false
           FileEncoding: 'auto'
           WriteBOM: false
-          VersionNumber: '$(Build.BuildNumber)'
-          FileVersionNumber: '$(Build.BuildNumber)'
-          InformationalVersion: '$(Build.BuildNumber)'
           LogLevel: 'verbose'
           FailOnWarning: false
           DisableTelemetry: true
@@ -56,10 +53,6 @@ jobs:
           InsertAttributes: false
           FileEncoding: 'auto'
           WriteBOM: false
-          VersionNumber: '$(Build.BuildNumber)'
-          FileVersionNumber: '$(Build.BuildNumber)'
-          InformationalVersion: '$(Build.BuildNumber)'
-          PackageVersion: '$(Build.BuildNumber)'
           LogLevel: 'verbose'
           FailOnWarning: false
           DisableTelemetry: true
