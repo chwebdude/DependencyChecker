@@ -121,7 +121,7 @@ jobs:
         displayName: 'Build tool'
         inputs:
           command: 'build'
-          arguments: '--no-restore'
+          arguments: '--no-restore --configuration $(BuildConfiguration)'
       
       - task: DotNetCoreCLI@2
         displayName: 'Test Tool'
