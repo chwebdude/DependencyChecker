@@ -7,14 +7,28 @@ pool:
 variables:
   - name: DotnetVersion
     value: '8'
+  - name: BuildConfiguration
+    value: Release
+  - name: ExtensionId
+    ${{ if eq( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: dependency-checker
+    ${{ if ne( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: a46650ae-fa0a-458f-8ca1-7ae59c43838d # Preview ID
+  - name: ExtensionName
+    ${{ if eq( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: dependency-checker
+    ${{ if ne( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: dependency-checker-dev
+  - name: ExtensionVisibility
+    ${{ if eq( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: public
+    ${{ if ne( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: publicpreview
+
 
 jobs:
   - job:
-    displayName: 'Deploy Dev'
-    condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
-    variables:
-      - name: BuildConfiguration
-        value: Debug
+    displayName: 'Build & Deploy'        
     steps:
       - task: TfxInstaller@4
         displayName: 'Install newest tfx-cli'
@@ -26,8 +40,8 @@ jobs:
           connectTo: 'VsTeam'
           connectedServiceName: 'Marketplace'
           publisherId: 'chwebdude'
-          extensionId: 'a46650ae-fa0a-458f-8ca1-7ae59c43838d'
-          versionAction: 'Patch'
+          extensionId: '$(ExtensionId)'
+          versionAction: 'Minor'
           setBuildNumber: 'true'
         
 
@@ -135,9 +149,9 @@ jobs:
           connectTo: 'VsTeam'
           connectedServiceName: 'Marketplace'
           fileType: 'manifest'
-          extensionId: 'a46650ae-fa0a-458f-8ca1-7ae59c43838d'
-          extensionName: 'dependency-checker-dev'
+          extensionId: '$(ExtensionId)'
+          extensionName: '$(ExtensionName)'
           extensionVersion: '$(Build.BuildNumber)'
           updateTasksId: true
-          extensionVisibility: 'private'
+          extensionVisibility: '$(ExtensionVisibility)'
           shareWith: 'webdude'
