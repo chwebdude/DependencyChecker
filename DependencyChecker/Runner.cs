@@ -345,7 +345,7 @@ namespace DependencyChecker
             var validAuthenticationTypes = Environment.GetEnvironmentVariable("DEPC_NUGET_VALID_AUTHENTICATION_TYPES");
             if (string.IsNullOrEmpty(validAuthenticationTypes))
             {
-                validAuthenticationTypes = "Basic";
+                validAuthenticationTypes = "basic,negotiate";
             }
 
             var settings = Settings.LoadDefaultSettings(null);
@@ -399,6 +399,8 @@ namespace DependencyChecker
                 _packageMetadataResources.Add(metadataResource);
                 _logger.LogInformation("  " + sr + " \t - \t" + sr.PackageSource.Source);
                 Sources.Add(sr.PackageSource.Source);
+
+
             }
 
 
