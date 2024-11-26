@@ -24,7 +24,7 @@ async function run() {
         var sortByOutdated = tl.getBoolInput("sortByOutdated", false);
         var collectionUri = process.env.SYSTEM_COLLECTIONURI;
 
-        let toolPath = __dirname + "\\..\\bin\\DependencyChecker.exe";
+        let toolPath = __dirname + "/../bin/DependencyChecker.exe";
 
         let arg = ["--dev-ops-result-file", "--search-path", path, "--report-path", reportPath];
         if (createReport)
