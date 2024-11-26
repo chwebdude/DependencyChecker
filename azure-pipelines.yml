@@ -24,6 +24,11 @@ variables:
       value: public
     ${{ if ne( variables['Build.SourceBranchName'], 'master' ) }}: 
       value: publicpreview
+  - name: UpdateTaskId
+    ${{ if eq( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: false
+    ${{ if ne( variables['Build.SourceBranchName'], 'master' ) }}: 
+      value: true      
 
 
 jobs:
@@ -155,7 +160,7 @@ jobs:
           extensionId: '$(ExtensionId)'
           extensionName: '$(ExtensionName)'
           extensionVersion: '$(Build.BuildNumber)'
-          updateTasksId: true
+          updateTasksId: $(UpdateTaskId)
           extensionVisibility: '$(ExtensionVisibility)'
           shareWith: 'webdude'
         condition: and(succeeded(), eq(variables['Build.Repository.Name'], 'chwebdude/DependencyChecker'))
