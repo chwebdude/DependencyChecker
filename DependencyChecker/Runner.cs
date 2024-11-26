@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -334,19 +335,12 @@ namespace DependencyChecker
         private void Initialize()
         {
             _logger.LogInformation("Using Sources:");
-            var username = Environment.GetEnvironmentVariable("DEPC_NUGET_USERNAME");
-            if (string.IsNullOrEmpty(username))
-            {
-                username = "noUserProvided";
-            }
-
+            var username = Environment.GetEnvironmentVariable("DEPC_NUGET_USERNAME") ?? "noUserProvided";
             var password = Environment.GetEnvironmentVariable("DEPC_NUGET_PASSWORD") ?? string.Empty;
-            var sourcesPrefix = Environment.GetEnvironmentVariable("DEPC_NUGET_SOURCESPREFIX")?.Split(',').ToList() ?? new List<string>();
-            var validAuthenticationTypes = Environment.GetEnvironmentVariable("DEPC_NUGET_VALID_AUTHENTICATION_TYPES");
-            if (string.IsNullOrEmpty(validAuthenticationTypes))
-            {
-                validAuthenticationTypes = "basic,negotiate";
-            }
+            var sourcesPrefix = Environment.GetEnvironmentVariable("DEPC_NUGET_SOURCESPREFIX")?.Split(',').ToList() ?? [];
+            var packageSourceFilter = Environment.GetEnvironmentVariable("DEPC_NUGET_PACKAGE_SOURCE_FILTER") ?? "";
+            var validAuthenticationTypes = Environment.GetEnvironmentVariable("DEPC_NUGET_VALID_AUTHENTICATION_TYPES") ?? "basic,negotiate";
+            
 
             var settings = Settings.LoadDefaultSettings(null);
             if (!string.IsNullOrEmpty(_options.CustomNuGetFile))
@@ -373,8 +367,9 @@ namespace DependencyChecker
                 var sourceUri = sourceRepository.PackageSource.Source;
                 var sourceName = sourceRepository.PackageSource.Name;
 
-                if (sourceName.EndsWith(".Local", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrEmpty(packageSourceFilter) && Regex.IsMatch(sourceName, packageSourceFilter, RegexOptions.IgnoreCase))
                 {
+                    _logger.LogInformation($"  Skipping source {sourceUri} because it matches the provided 'DEPC_NUGET_PACKAGE_SOURCE_FILTER'");
                     continue;
                 }
 
