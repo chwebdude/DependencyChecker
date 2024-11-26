@@ -49,9 +49,7 @@
     <PackageReference Include="NuGet.Configuration" Version="6.12.1" />
     <PackageReference Include="NuGet.Frameworks" Version="6.12.1" />
     <PackageReference Include="NuGet.Packaging" Version="6.12.1" />
-    <PackageReference Include="NuGet.Packaging.Core.Types" Version="4.2.0" />
-    <PackageReference Include="NuGet.Protocol.Core.Types" Version="4.2.0" />
-    <PackageReference Include="NuGet.Protocol.Core.v3" Version="4.2.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.12.1" />
     <PackageReference Include="NuGet.Versioning" Version="6.12.1" />
     <PackageReference Include="Stubble.Core" Version="1.10.8" />
     <PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
