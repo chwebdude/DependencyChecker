@@ -155,7 +155,7 @@ jobs:
           extensionId: '$(ExtensionId)'
           extensionName: '$(ExtensionName)'
           extensionVersion: '$(Build.BuildNumber)'
-          updateTasksId: true
+          updateTasksId: false
           extensionVisibility: '$(ExtensionVisibility)'
           shareWith: 'webdude'
         condition: and(succeeded(), eq(variables['Build.Repository.Name'], 'chwebdude/DependencyChecker'))
